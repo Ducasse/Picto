@@ -24,9 +24,13 @@ The numbers represent the number of consecutives cells.
 ```
 
 #### Consecutives of different colors
-
-There is no space between two consecutive groups of different colors.
-	3X 1C 3X => XXX C XXX
+We may have multiple space between different colored blocks.
+	
+	3X 1C 3X 
+		=> XXX space* C space* XXX
+		=> XXX C XXX
+		=> XXX space C XXX	
+	
 	
 
 "
