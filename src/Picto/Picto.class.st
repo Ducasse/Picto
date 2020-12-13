@@ -38,7 +38,104 @@ Class {
 	#name : #Picto,
 	#superclass : #Object,
 	#instVars : [
-		'pictureMatrix'
+		'picture'
+	],
+	#classVars : [
+		'Black',
+		'Green',
+		'Red',
+		'White',
+		'Yellow'
 	],
 	#category : #Picto
 }
+
+{ #category : #initialization }
+Picto class >> black [
+
+	^ Black 
+]
+
+{ #category : #examples }
+Picto class >> cross [
+	<sampleInstance>
+	
+	| a2d |
+	a2d := CTArray2D fromArray: 
+		{ 
+		White . White . Black . White . White . 
+		White . White . Black . White . White . 
+		Black . Black . Black . Black . Black . 
+		White . White . Black . White . White . 
+		White . White . Black . White . White
+		 }
+		 width: 5.
+	^ self new 
+		picture: a2d;
+		yourself
+]
+
+{ #category : #initialization }
+Picto class >> green [
+
+	^ Green
+]
+
+{ #category : #initialization }
+Picto class >> initialize [
+	"self initialize"
+	
+	White := 0.
+	Black := 1.
+	Red := 2.
+	Green := 3. 
+	Yellow := 4.
+
+]
+
+{ #category : #initialization }
+Picto class >> red [
+
+	^ Red
+]
+
+{ #category : #initialization }
+Picto class >> white [
+
+	^ White
+]
+
+{ #category : #initialization }
+Picto class >> yellow [
+
+	^ Yellow
+]
+
+{ #category : #accessing }
+Picto >> at: anInteger at: anInteger2 [ 
+	^ picture at: anInteger at: anInteger2 
+]
+
+{ #category : #accessing }
+Picto >> atX: anInteger atY: anInteger2 [ 
+  ^ picture atX: anInteger atY: anInteger2 
+]
+
+{ #category : #accessing }
+Picto >> inspectionPragmas [
+	<inspectorPresentationOrder: 30 title: 'Picture'> 
+
+	^ SpTextPresenter new
+		text: picture printString;
+		yourself
+]
+
+{ #category : #accessing }
+Picto >> picture: aCTArray2D [ 
+	picture := aCTArray2D
+]
+
+{ #category : #accessing }
+Picto >> width [
+	^ picture width
+]
