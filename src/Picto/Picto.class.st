@@ -39,10 +39,12 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'picture',
-		'hStripes'
+		'hStripes',
+		'vStripes'
 	],
 	#classVars : [
 		'Black',
+		'Empty',
 		'Green',
 		'Red',
 		'White',
@@ -77,6 +79,12 @@ Picto class >> cross [
 ]
 
 { #category : #initialization }
+Picto class >> empty [
+
+	^ Empty 
+]
+
+{ #category : #initialization }
 Picto class >> green [
 
 	^ Green
@@ -85,7 +93,7 @@ Picto class >> green [
 { #category : #initialization }
 Picto class >> initialize [
 	"self initialize"
-	
+	Empty := 100.
 	White := 0.
 	Black := 1.
 	Red := 2.
@@ -122,7 +130,7 @@ Picto >> atX: anInteger atY: anInteger2 [
   ^ picture atX: anInteger atY: anInteger2 
 ]
 
-{ #category : #accessing }
+{ #category : #stripes }
 Picto >> computeStripes [ 
 	
 	1 to: picture height do: [ :i | 
@@ -131,7 +139,7 @@ Picto >> computeStripes [
 		
 ]
 
-{ #category : #computing }
+{ #category : #stripes }
 Picto >> hStripesFor: aLineIndex [
 
 	^ hStripes at: aLineIndex
@@ -147,9 +155,11 @@ Picto >> hStripesFor: aLineIndex group: aGroupIndex [
 ]
 
 { #category : #initialization }
-Picto >> initialize [ 
+Picto >> initialize [
 
+	super initialize.
 	hStripes := OrderedCollection new.
+	vStripes := OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -165,6 +175,21 @@ Picto >> inspectionPragmas [
 Picto >> picture: aCTArray2D [ 
 	picture := aCTArray2D.
 	self computeStripes.
+]
+
+{ #category : #stripes }
+Picto >> vStripesFor: aLineIndex [
+
+	^ vStripes at: aLineIndex 
+]
+
+{ #category : #stripes }
+Picto >> vStripesFor: aLineIndex group: aGroupIndex [
+	"Blue Blue Green Blue Blue is encoded as B2 G1 B2"
+	"so group: 2 -> 1"
+		
+	^ (vStripes at: aLineIndex) runs at: aGroupIndex 
+		
 ]
 
 { #category : #accessing }

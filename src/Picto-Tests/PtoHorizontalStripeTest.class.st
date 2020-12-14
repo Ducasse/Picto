@@ -10,6 +10,37 @@ PtoHorizontalStripeTest >> classUnderTest [
 ]
 
 { #category : #tests }
+PtoHorizontalStripeTest >> testAccessingInformation [
+
+	| picto aStripe |
+	picto := self classUnderTest cross.
+	"White white Black white white"
+	aStripe := picto hStripesFor: 1.
+	self assert: aStripe runs size equals: 3.
+	self assert: (aStripe runs at: 1) equals: 2.
+	self assert: (aStripe values at: 1) equals: self classUnderTest white.
+	self assert: (aStripe values at: 2) equals: self classUnderTest black
+	
+]
+
+{ #category : #tests }
+PtoHorizontalStripeTest >> testAccessingInformation2 [
+
+	| picto aStripe |
+	self skip.
+	picto := self classUnderTest cross.
+	"black black Black black black"
+	aStripe := picto hStripesFor: 3.
+	self assert: aStripe runs size equals: 1.
+	self assert: (aStripe runs at: 1) equals: 5.
+	self assert: (aStripe values at: 1) equals: self classUnderTest black.
+	self assert: (aStripe values at: 2) equals: self classUnderTest black.
+	self assert: (aStripe values at: 3) equals: self classUnderTest black
+	
+	"This test show that the API of RunArray is not done to query a value of given index."
+]
+
+{ #category : #tests }
 PtoHorizontalStripeTest >> testContiguousGeneratesOnSingleBlock [
 
 	| picto |
