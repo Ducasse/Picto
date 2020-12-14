@@ -12,10 +12,13 @@ PtoHorizontalStripeTest >> classUnderTest [
 { #category : #tests }
 PtoHorizontalStripeTest >> testContiguousGeneratesOnSingleBlock [
 
-	| pict |
-	self skip.
-	pict := self classUnderTest firstLineContiguous.
-	self assert: (pict hStripesFor: 1) size equals: 1.
+	| picto |
+	picto := self classUnderTest cross.
+	"White white Black white white"
+	self assert: (picto hStripesFor: 1) runs size equals: 3.
+	"Black Black Black Black Black"
+	self assert: (picto hStripesFor: 3) runs size equals: 1.
+	self assert: (picto hStripesFor: 3 group: 1) equals: 5.
 ]
 
 { #category : #tests }

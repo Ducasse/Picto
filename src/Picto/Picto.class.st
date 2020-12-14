@@ -38,7 +38,8 @@ Class {
 	#name : #Picto,
 	#superclass : #Object,
 	#instVars : [
-		'picture'
+		'picture',
+		'hStripes'
 	],
 	#classVars : [
 		'Black',
@@ -122,6 +123,36 @@ Picto >> atX: anInteger atY: anInteger2 [
 ]
 
 { #category : #accessing }
+Picto >> computeStripes [ 
+	
+	1 to: picture height do: [ :i | 
+		hStripes add: (CTRunArray newFrom: (picture atRow: i)) 	
+		]
+		
+]
+
+{ #category : #computing }
+Picto >> hStripesFor: aLineIndex [
+
+	^ hStripes at: aLineIndex
+]
+
+{ #category : #stripes }
+Picto >> hStripesFor: aLineIndex group: aGroupIndex [
+	"Blue Blue Green Blue Blue is encoded as B2 G1 B2"
+	"so group: 2 -> 1"
+		
+	^ (hStripes at: aLineIndex) runs at: aGroupIndex 
+		
+]
+
+{ #category : #initialization }
+Picto >> initialize [ 
+
+	hStripes := OrderedCollection new.
+]
+
+{ #category : #accessing }
 Picto >> inspectionPragmas [
 	<inspectorPresentationOrder: 30 title: 'Picture'> 
 
@@ -132,7 +163,8 @@ Picto >> inspectionPragmas [
 
 { #category : #accessing }
 Picto >> picture: aCTArray2D [ 
-	picture := aCTArray2D
+	picture := aCTArray2D.
+	self computeStripes.
 ]
 
 { #category : #accessing }
