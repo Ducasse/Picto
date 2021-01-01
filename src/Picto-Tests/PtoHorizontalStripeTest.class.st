@@ -10,10 +10,17 @@ PtoHorizontalStripeTest >> classUnderTest [
 ]
 
 { #category : #tests }
+PtoHorizontalStripeTest >> cross [
+
+	^ self classUnderTest cross
+	
+]
+
+{ #category : #tests }
 PtoHorizontalStripeTest >> testAccessingInformation [
 
 	| picto aStripe |
-	picto := self classUnderTest cross.
+	picto := self cross.
 	"White white Black white white"
 	aStripe := picto hStripesFor: 1.
 	self assert: aStripe runs size equals: 3.
@@ -44,7 +51,7 @@ PtoHorizontalStripeTest >> testAccessingInformation2 [
 PtoHorizontalStripeTest >> testContiguousGeneratesOnSingleBlock [
 
 	| picto |
-	picto := self classUnderTest cross.
+	picto := self cross.
 	"White white Black white white"
 	self assert: (picto hStripesFor: 1) runs size equals: 3.
 	"Black Black Black Black Black"
@@ -56,7 +63,7 @@ PtoHorizontalStripeTest >> testContiguousGeneratesOnSingleBlock [
 PtoHorizontalStripeTest >> testPictoReadyForTest [
 
 	| pict |
-	pict := self classUnderTest cross.
+	pict := self cross.
 	self assert: pict width equals: 5.
 	self assert: (pict atX: 3 atY: 3) equals: pict class black
 ]
