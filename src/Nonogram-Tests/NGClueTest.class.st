@@ -10,20 +10,6 @@ Class {
 }
 
 { #category : 'tests' }
-NGClueTest >> testAcceptsPrefix [
-	| clue |
-	clue := NGClue blocks: #(2 1).
-	self assert: (clue acceptsPrefix: #() inLength: 5).
-	self assert: (clue acceptsPrefix: #(true true false) inLength: 5).
-	self assert: (clue acceptsPrefix: #(false true) inLength: 5).
-	self deny: (clue acceptsPrefix: #(true true true) inLength: 5).
-	self deny: (clue acceptsPrefix: #(true false) inLength: 5).
-	self deny: (clue acceptsPrefix: #(false false true true) inLength: 5).
-	self assert: ((NGClue blocks: #()) acceptsPrefix: #(false) inLength: 3).
-	self deny: ((NGClue blocks: #()) acceptsPrefix: #(true) inLength: 3)
-]
-
-{ #category : 'tests' }
 NGClueTest >> testFromLine [
 	self assert: (NGClue fromLine: #(true true false true)) blocks equals: #(2 1).
 	self assert: (NGClue fromLine: #(false true true true)) blocks equals: #(3).

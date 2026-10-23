@@ -6,12 +6,12 @@ Responsibility:
 - enumerate every line of a given length satisfying me
 - tell whether the beginning of a line can still be completed to satisfy me
 
-Collaborators: NGPuzzle builds me; NGSolver uses my placements and prefix test.
+Collaborators: NGPuzzle builds me; NGSolver uses my placements.
 
 Public API and Key Messages:
 - NGClue class >> #fromLine: and #blocks: create me
 - #blocks, #isEmpty, #filledCount, #isSatisfiedBy:
-- #placementsInLength:, #acceptsPrefix:inLength:
+- #placementsInLength:
 
 	(NGClue fromLine: #(true true false true)) blocks >>> #(2 1)
 
@@ -55,30 +55,6 @@ NGClue class >> fromLine: aCollectionOfBooleans [
 { #category : 'comparing' }
 NGClue >> = anObject [
 	^ self class = anObject class and: [ blocks = anObject blocks ]
-]
-
-{ #category : 'solving' }
-NGClue >> acceptsPrefix: aCollectionOfBooleans inLength: aLength [
-	"Answer whether the first cells of a line of aLength cells can still be completed to satisfy me"
-	| completed run remaining needed |
-	completed := OrderedCollection new.
-	run := 0.
-	aCollectionOfBooleans do: [ :filled |
-		filled
-			ifTrue: [ run := run + 1 ]
-			ifFalse: [
-				run > 0 ifTrue: [ completed add: run ].
-				run := 0 ] ].
-	completed size > blocks size ifTrue: [ ^ false ].
-	(blocks first: completed size) = completed asArray ifFalse: [ ^ false ].
-	remaining := blocks allButFirst: completed size.
-	run > 0
-		ifTrue: [
-			remaining ifEmpty: [ ^ false ].
-			run > remaining first ifTrue: [ ^ false ].
-			needed := remaining first - run + (remaining allButFirst inject: 0 into: [ :sum :each | sum + each + 1 ]) ]
-		ifFalse: [ needed := (remaining inject: 0 into: [ :sum :each | sum + each + 1 ]) - 1 max: 0 ].
-	^ needed <= (aLength - aCollectionOfBooleans size)
 ]
 
 { #category : 'accessing' }

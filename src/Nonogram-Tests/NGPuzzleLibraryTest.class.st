@@ -31,7 +31,10 @@ NGPuzzleLibraryTest >> testAmbiguousPuzzleIsRejected [
 
 { #category : 'tests' }
 NGPuzzleLibraryTest >> testDefault [
-	self assert: (NGPuzzleLibrary default puzzles collect: [ :each | each name ]) asArray equals: #('Heart' 'House' 'Plus')
+	| names |
+	names := NGPuzzleLibrary default puzzles collect: [ :each | each name ].
+	self assert: names size equals: 11.
+	self assert: (names includesAll: #('Heart' 'Lighthouse' 'Great balloon' 'Cat'))
 ]
 
 { #category : 'tests' }

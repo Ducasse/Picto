@@ -64,6 +64,15 @@ NGGameElementTest >> testKeyboardMovesCursorAndPlays [
 ]
 
 { #category : 'tests' }
+NGGameElementTest >> testOpenSizesWindowToFit [
+	| element space |
+	element := self element.
+	space := element open.
+	[ self assert: space extent equals: element extent.
+	self assert: space title equals: 'Plus' ] ensure: [ space close ]
+]
+
+{ #category : 'tests' }
 NGGameElementTest >> testPrimaryClickFills [
 	| element cell |
 	element := self element.

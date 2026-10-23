@@ -12,7 +12,8 @@ Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Dele
 Collaborators: NGGame, NGCellElement, NGClueElement, NGCursor.
 
 Public API and Key Messages:
-- NGGameElement class >> #on: creates me; #example opens one
+- NGGameElement class >> #on: creates me; #openOn: opens a game on a puzzle; #example opens one
+- #open opens me in a window sized to fit the puzzle
 - #fillAtRow:column:, #crossAtRow:column:, #clearAtRow:column:, #restart, #refresh
 
 	NGGameElement example
@@ -52,12 +53,18 @@ Class {
 { #category : 'examples' }
 NGGameElement class >> example [
 	<script>
-	(self on: (NGGame on: (NGPuzzleLibrary default puzzleNamed: 'Heart'))) openInNewSpace
+	(self on: (NGGame on: (NGPuzzleLibrary default puzzleNamed: 'Heart'))) open
 ]
 
 { #category : 'instance creation' }
 NGGameElement class >> on: aGame [
 	^ self new setGame: aGame
+]
+
+{ #category : 'opening' }
+NGGameElement class >> openOn: aPuzzle [
+	"Open a game on aPuzzle in a window sized to fit it"
+	^ (self on: (NGGame on: aPuzzle)) open
 ]
 
 { #category : 'accessing' }
@@ -282,6 +289,25 @@ NGGameElement >> newToolbar [
 	statusLabel := ToLabel text: ''.
 	toolbar addChild: statusLabel.
 	^ toolbar
+]
+
+{ #category : 'opening' }
+NGGameElement >> open [
+	"Open me in a new window that keeps fitting my size, clues, lives and toolbar included"
+	| space |
+	self forceLayout.
+	space := BlSpace new.
+	space
+		title: game puzzle name;
+		extent: self extent ceiling.
+	space root
+		background: NGPalette background;
+		addChild: self.
+	self
+		addEventHandlerOn: BlElementExtentChangedEvent
+		do: [ :event | space extent: self extent ceiling ].
+	space show.
+	^ space
 ]
 
 { #category : 'rendering' }
