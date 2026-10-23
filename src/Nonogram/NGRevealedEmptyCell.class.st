@@ -36,6 +36,11 @@ NGRevealedEmptyCell >> afterFill [
 	^ self
 ]
 
+{ #category : 'transitions' }
+NGRevealedEmptyCell >> afterWin [
+	^ NGUnknownCell new
+]
+
 { #category : 'printing' }
 NGRevealedEmptyCell >> character [
 	^ $!

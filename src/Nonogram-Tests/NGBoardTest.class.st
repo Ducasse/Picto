@@ -30,3 +30,14 @@ NGBoardTest >> testPutAndLines [
 	board reset.
 	self assert: (board atRow: 1 column: 2) equals: NGUnknownCell new
 ]
+
+{ #category : 'tests' }
+NGBoardTest >> testShowSolvedClearsCrosses [
+	| board |
+	board := NGBoard height: 1 width: 4.
+	board atRow: 1 column: 1 put: NGFilledCell new.
+	board atRow: 1 column: 2 put: NGCrossedCell new.
+	board atRow: 1 column: 3 put: NGRevealedEmptyCell new.
+	board showSolved.
+	self assert: board printString equals: '#...'
+]

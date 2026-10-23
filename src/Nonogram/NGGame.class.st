@@ -88,6 +88,7 @@ NGGame >> board [
 NGGame >> checkSolved [
 	self isSolved ifFalse: [ ^ self ].
 	timer stop.
+	board showSolved.
 	state := NGWonState new
 ]
 

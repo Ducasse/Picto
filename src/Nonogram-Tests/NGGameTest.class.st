@@ -101,6 +101,17 @@ NGGameTest >> testTimerRunsFromFirstMoveUntilSolved [
 ]
 
 { #category : 'tests' }
+NGGameTest >> testWinningClearsCrosses [
+	| game |
+	game := self game.
+	game toggleCrossAtRow: 1 column: 1.
+	game toggleFillAtRow: 3 column: 3.
+	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p | game toggleFillAtRow: p first column: p second ].
+	self assert: game isSolved.
+	self assert: game board printString equals: ('.#.', (String with: Character cr), '###', (String with: Character cr), '.#.')
+]
+
+{ #category : 'tests' }
 NGGameTest >> testWonGameIgnoresActions [
 	| game |
 	game := self game.

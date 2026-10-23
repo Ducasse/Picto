@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : 'tests' }
+NGRevealedEmptyCellTest >> testAfterWin [
+	self assert: NGRevealedEmptyCell new afterWin equals: NGUnknownCell new
+]
+
+{ #category : 'tests' }
 NGRevealedEmptyCellTest >> testIsLocked [
 	| cell |
 	cell := NGRevealedEmptyCell new.

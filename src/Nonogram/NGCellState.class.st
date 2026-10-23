@@ -48,6 +48,12 @@ NGCellState >> afterFill [
 	^ self subclassResponsibility
 ]
 
+{ #category : 'transitions' }
+NGCellState >> afterWin [
+	"Return the state shown once the puzzle is solved: only filled cells remain visible"
+	^ self
+]
+
 { #category : 'printing' }
 NGCellState >> character [
 	^ self subclassResponsibility

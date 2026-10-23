@@ -31,6 +31,11 @@ NGCrossedCell >> afterFill [
 	^ NGFilledCell new
 ]
 
+{ #category : 'transitions' }
+NGCrossedCell >> afterWin [
+	^ NGUnknownCell new
+]
+
 { #category : 'printing' }
 NGCrossedCell >> character [
 	^ $x

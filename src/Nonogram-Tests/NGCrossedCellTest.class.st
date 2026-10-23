@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : 'tests' }
+NGCrossedCellTest >> testAfterWin [
+	self assert: NGCrossedCell new afterWin equals: NGUnknownCell new
+]
+
+{ #category : 'tests' }
 NGCrossedCellTest >> testTransitions [
 	self assert: NGCrossedCell new afterFill equals: NGFilledCell new.
 	self assert: NGCrossedCell new afterCross equals: NGUnknownCell new.

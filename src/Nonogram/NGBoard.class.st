@@ -91,6 +91,12 @@ NGBoard >> setHeight: aHeight width: aWidth [
 	rows := (1 to: aHeight) collect: [ :each | Array new: aWidth withAll: NGUnknownCell new ]
 ]
 
+{ #category : 'actions' }
+NGBoard >> showSolved [
+	"Clear every cross so that only the picture remains"
+	rows do: [ :row | row doWithIndex: [ :cell :index | row at: index put: cell afterWin ] ]
+]
+
 { #category : 'accessing' }
 NGBoard >> width [
 	^ rows first size
