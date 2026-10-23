@@ -64,6 +64,18 @@ NGGameElementTest >> testKeyboardMovesCursorAndPlays [
 ]
 
 { #category : 'tests' }
+NGGameElementTest >> testLossShowsOverlay [
+	| element |
+	element := self element.
+	self deny: element overlay isVisible.
+	element fillAtRow: 1 column: 1; fillAtRow: 1 column: 3; fillAtRow: 3 column: 1.
+	self assert: element overlay isVisible.
+	self deny: element banner isVisible.
+	element restart.
+	self deny: element overlay isVisible
+]
+
+{ #category : 'tests' }
 NGGameElementTest >> testOpenSizesWindowToFit [
 	| element space |
 	element := self element.
@@ -117,4 +129,16 @@ NGGameElementTest >> testSolvingAndRestart [
 { #category : 'tests' }
 NGGameElementTest >> testTimerLabel [
 	self assert: self element timerText equals: '00:00'
+]
+
+{ #category : 'tests' }
+NGGameElementTest >> testWinShowsBanner [
+	| element |
+	element := self element.
+	self deny: element banner isVisible.
+	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p | element fillAtRow: p first column: p second ].
+	self assert: element banner isVisible.
+	self deny: element overlay isVisible.
+	element restart.
+	self deny: element banner isVisible
 ]

@@ -36,6 +36,11 @@ NGPlayingState >> fillAtRow: aRow column: aColumn in: aGame [
 	aGame basicFillAtRow: aRow column: aColumn
 ]
 
+{ #category : 'rendering' }
+NGPlayingState >> showOutcomeOn: aGameElement for: aGame [
+	aGameElement hideOutcome
+]
+
 { #category : 'printing' }
 NGPlayingState >> statusTextIn: aGame [
 	^ ''

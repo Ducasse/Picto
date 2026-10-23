@@ -5,7 +5,7 @@ Responsibility: handle the player's actions and describe the status of the game.
 
 Collaborators: NGGame delegates to me; my subclasses are NGPlayingState, NGWonState and NGLostState.
 
-Public API and Key Messages: #fillAtRow:column:in:, #crossAtRow:column:in:, #clearAtRow:column:in:, #statusTextIn:
+Public API and Key Messages: #fillAtRow:column:in:, #crossAtRow:column:in:, #clearAtRow:column:in:, #statusTextIn:, #showOutcomeOn:for: (shows the end of the game on an NGGameElement)
 
 	NGPlayingState new statusTextIn: aGame
 
@@ -33,6 +33,12 @@ NGGameState >> crossAtRow: aRow column: aColumn in: aGame [
 
 { #category : 'actions' }
 NGGameState >> fillAtRow: aRow column: aColumn in: aGame [
+	^ self subclassResponsibility
+]
+
+{ #category : 'rendering' }
+NGGameState >> showOutcomeOn: aGameElement for: aGame [
+	"Show on aGameElement how the game ended, if it did"
 	^ self subclassResponsibility
 ]
 

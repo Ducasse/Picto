@@ -18,3 +18,11 @@ NGLostStateTest >> testIgnoresActions [
 	self assert: game board printString equals: '..'.
 	self assert: (NGLostState new statusTextIn: game) equals: 'Game over'
 ]
+
+{ #category : 'tests' }
+NGLostStateTest >> testShowOutcomeShowsOverlay [
+	| element |
+	element := NGGameElement on: (NGGame on: NGPuzzles plus).
+	NGLostState new showOutcomeOn: element for: element game.
+	self assert: element overlay isVisible
+]

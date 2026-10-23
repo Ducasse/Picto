@@ -5,6 +5,7 @@ Responsibility:
 - show a toolbar with restart, the lives as hearts, a timer and a status
 - show the grid with the clues and the cells, highlighting satisfied clues
 - turn mouse clicks and keys into game actions
+- show a banner with the solving time when the game is won, and a game over overlay on the grid when it is lost
 
 Mouse: a primary click fills a cell, a secondary click crosses it.
 Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears.
@@ -15,6 +16,7 @@ Public API and Key Messages:
 - NGGameElement class >> #on: creates me; #openOn: opens a game on a puzzle; #example opens one
 - #open opens me in a window sized to fit the puzzle
 - #fillAtRow:column:, #crossAtRow:column:, #clearAtRow:column:, #restart, #refresh
+- #showWon:, #showLost, #hideOutcome, called by the game state
 
 	NGGameElement example
 
@@ -28,6 +30,9 @@ Instance Variables
 	cursor:				<NGCursor> the keyboard cursor
 	statusLabel:			<ToLabel> shows the game status
 	timerLabel:			<ToLabel> shows the elapsed time
+	banner:				<BlElement> the win banner with a Play again button, gone while playing
+	bannerLabel:			<ToLabel> the text of the win banner
+	overlay:				<BlElement> the game over layer over the grid with a Try again button, hidden while playing
 	livesElement:			<BlElement> shows one heart icon per life, full or empty
 	ticker:				<BlRepeatedTaskAction> refreshes the timer every second while I am in a space
 "
@@ -43,7 +48,10 @@ Class {
 		'cursor',
 		'timerLabel',
 		'ticker',
-		'livesElement'
+		'livesElement',
+		'banner',
+		'bannerLabel',
+		'overlay'
 	],
 	#category : 'Nonogram-UI-Core',
 	#package : 'Nonogram-UI',
@@ -65,6 +73,11 @@ NGGameElement class >> on: aGame [
 NGGameElement class >> openOn: aPuzzle [
 	"Open a game on aPuzzle in a window sized to fit it"
 	^ (self on: (NGGame on: aPuzzle)) open
+]
+
+{ #category : 'accessing' }
+NGGameElement >> banner [
+	^ banner
 ]
 
 { #category : 'accessing' }
@@ -128,6 +141,12 @@ NGGameElement >> handleKey: aKey [
 	self perform: (self keyActions at: aKey ifAbsent: [ ^ self ])
 ]
 
+{ #category : 'rendering' }
+NGGameElement >> hideOutcome [
+	banner visibility: BlVisibility gone.
+	overlay visibility: BlVisibility hidden
+]
+
 { #category : 'initialization' }
 NGGameElement >> installKeyboardHandlers [
 	self addEventHandlerOn: BlKeyDownEvent do: [ :event | self handleKey: event key ]
@@ -175,6 +194,24 @@ NGGameElement >> moveCursorRight [
 NGGameElement >> moveCursorUp [
 	cursor moveUp.
 	self refresh
+]
+
+{ #category : 'building' }
+NGGameElement >> newBanner [
+	banner := BlElement new
+		layout: (BlLinearLayout horizontal cellSpacing: 16) alignCenterLeft;
+		padding: (BlInsets all: 10);
+		background: NGPalette satisfiedClueBackground;
+		geometry: (BlRoundedRectangleGeometry cornerRadius: 8);
+		visibility: BlVisibility gone;
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
+	bannerLabel := ToLabel text: ''.
+	banner addChild: bannerLabel.
+	banner addChild: ((ToButton labelText: 'Play again') clickAction: [ self restart ]).
+	^ banner
 ]
 
 { #category : 'building' }
@@ -252,6 +289,51 @@ NGGameElement >> newGrid [
 ]
 
 { #category : 'building' }
+NGGameElement >> newOverlay [
+	| card |
+	card := BlElement new
+		layout: (BlLinearLayout vertical cellSpacing: 12) alignCenter;
+		padding: (BlInsets all: 20);
+		background: NGPalette emptyCell;
+		border: (BlBorder paint: NGPalette gridLine width: 2);
+		geometry: (BlRoundedRectangleGeometry cornerRadius: 12);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent.
+			layoutConstraints frame horizontal alignCenter.
+			layoutConstraints frame vertical alignCenter ];
+		yourself.
+	card addChild: (ToLabel text: ('Game over' asRopedText
+		foreground: NGPalette heart;
+		fontSize: NGCellElement fontSize * 1.5;
+		yourself)).
+	card addChild: ((ToButton labelText: 'Try again') clickAction: [ self restart ]).
+	overlay := BlElement new
+		layout: BlFrameLayout new;
+		background: (NGPalette background alpha: 0.8);
+		visibility: BlVisibility hidden;
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal matchParent.
+			layoutConstraints vertical matchParent ];
+		yourself.
+	overlay addChild: card.
+	^ overlay
+]
+
+{ #category : 'building' }
+NGGameElement >> newPlayArea [
+	"The grid with the game over overlay on top of it"
+	^ BlElement new
+		layout: BlFrameLayout new;
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		addChild: self newGrid;
+		addChild: self newOverlay;
+		yourself
+]
+
+{ #category : 'building' }
 NGGameElement >> newRowClueStrip [
 	| strip |
 	strip := BlElement new
@@ -297,6 +379,11 @@ NGGameElement >> open [
 	^ NGWindow open: self titled: game puzzle name
 ]
 
+{ #category : 'accessing' }
+NGGameElement >> overlay [
+	^ overlay
+]
+
 { #category : 'rendering' }
 NGGameElement >> refresh [
 	cells do: [ :rowCells |
@@ -310,7 +397,8 @@ NGGameElement >> refresh [
 		(game isColumnSatisfiedAt: index) ifTrue: [ element showSatisfied ] ifFalse: [ element showUnsatisfied ] ].
 	self refreshLives.
 	self refreshTimer.
-	statusLabel text: game statusText
+	statusLabel text: game statusText.
+	game showOutcomeOn: self
 ]
 
 { #category : 'rendering' }
@@ -349,13 +437,28 @@ NGGameElement >> setGame: aGame [
 			layoutConstraints horizontal fitContent.
 			layoutConstraints vertical fitContent ].
 	self addChild: self newToolbar.
-	self addChild: self newGrid.
+	self addChild: self newBanner.
+	self addChild: self newPlayArea.
 	self installKeyboardHandlers.
 	self addEventHandlerOn: BlElementAddedToSceneGraphEvent do: [ :event |
 		self startTicking.
 		self requestFocus ].
 	self addEventHandlerOn: BlElementRemovedFromSceneGraphEvent do: [ :event | self stopTicking ].
 	self refresh
+]
+
+{ #category : 'rendering' }
+NGGameElement >> showLost [
+	overlay visibility: BlVisibility visible
+]
+
+{ #category : 'rendering' }
+NGGameElement >> showWon: aString [
+	bannerLabel text: (aString asRopedText
+		foreground: NGPalette clueText;
+		fontSize: NGCellElement fontSize;
+		yourself).
+	banner visibility: BlVisibility visible
 ]
 
 { #category : 'timer' }

@@ -13,7 +13,7 @@ Collaborators: NGPuzzle, NGBoard, NGTimer, and NGGameState subclasses to which a
 Public API and Key Messages:
 - NGGame class >> #on:, #on:lives: and #on:lives:timer: create me (3 lives by default)
 - #toggleFillAtRow:column:, #toggleCrossAtRow:column:, #clearAtRow:column:, #restart
-- #isSolved, #isRowSatisfiedAt:, #isColumnSatisfiedAt:, #livesLeft, #printLives, #statusText, #timer
+- #isSolved, #isRowSatisfiedAt:, #isColumnSatisfiedAt:, #livesLeft, #printLives, #statusText, #timer, #showOutcomeOn:
 
 	(NGGame on: NGPuzzles plus) toggleFillAtRow: 2 column: 2
 
@@ -174,6 +174,11 @@ NGGame >> setPuzzle: aPuzzle lives: anInteger timer: aTimer [
 	lives := anInteger.
 	timer := aTimer.
 	self restart
+]
+
+{ #category : 'rendering' }
+NGGame >> showOutcomeOn: aGameElement [
+	state showOutcomeOn: aGameElement for: self
 ]
 
 { #category : 'accessing' }

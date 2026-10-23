@@ -17,3 +17,12 @@ NGPlayingStateTest >> testForwardsActions [
 	self assert: (game board atRow: 1 column: 2) equals: NGCrossedCell new.
 	self assert: (NGPlayingState new statusTextIn: game) equals: ''
 ]
+
+{ #category : 'tests' }
+NGPlayingStateTest >> testShowOutcomeHides [
+	| element |
+	element := NGGameElement on: (NGGame on: NGPuzzles plus).
+	element showLost.
+	NGPlayingState new showOutcomeOn: element for: element game.
+	self deny: element overlay isVisible
+]

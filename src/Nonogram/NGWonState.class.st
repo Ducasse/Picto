@@ -33,6 +33,11 @@ NGWonState >> crossAtRow: aRow column: aColumn in: aGame [
 NGWonState >> fillAtRow: aRow column: aColumn in: aGame [
 ]
 
+{ #category : 'rendering' }
+NGWonState >> showOutcomeOn: aGameElement for: aGame [
+	aGameElement showWon: (self statusTextIn: aGame) , '!'
+]
+
 { #category : 'printing' }
 NGWonState >> statusTextIn: aGame [
 	^ 'Solved in ', aGame timer printElapsed

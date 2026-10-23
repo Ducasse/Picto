@@ -33,6 +33,11 @@ NGLostState >> crossAtRow: aRow column: aColumn in: aGame [
 NGLostState >> fillAtRow: aRow column: aColumn in: aGame [
 ]
 
+{ #category : 'rendering' }
+NGLostState >> showOutcomeOn: aGameElement for: aGame [
+	aGameElement showLost
+]
+
 { #category : 'printing' }
 NGLostState >> statusTextIn: aGame [
 	^ 'Game over'
