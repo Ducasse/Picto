@@ -1,7 +1,7 @@
 "
 I am the state of a cell the player wrongly tried to fill: the fill was refused and I reveal that the cell is empty.
 
-Responsibility: stay unchanged whatever the action (I am locked); render as a red cross.
+Responsibility: stay unchanged whatever the action (I am locked); render as a reddish cell.
 
 Collaborators: NGGame puts me on the board on an error; NGCellElement displays me.
 

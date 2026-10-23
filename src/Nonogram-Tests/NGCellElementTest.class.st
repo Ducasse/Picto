@@ -10,6 +10,16 @@ Class {
 }
 
 { #category : 'tests' }
+NGCellElementTest >> testCrossedRendering [
+
+	| cell |
+	cell := NGCellElement row: 1 column: 1.
+	NGCrossedCell new renderOn: cell.
+	self assert: cell childrenCount equals: 1.
+	self assert: cell background paint color equals: Color white
+]
+
+{ #category : 'tests' }
 NGCellElementTest >> testCursorRendering [
 	| cell |
 	cell := NGCellElement row: 1 column: 1.
@@ -37,6 +47,6 @@ NGCellElementTest >> testRevealedEmptyRendering [
 	| cell |
 	cell := NGCellElement row: 1 column: 1.
 	NGRevealedEmptyCell new renderOn: cell.
-	self assert: cell childrenCount equals: 1.
-	self assert: ((cell children first text attributesAt: 1) anySatisfy: [ :each | each = (BlTextForegroundAttribute paint: Color red) ])
+	self assert: cell childrenCount equals: 0.
+	self assert: cell background paint color equals: NGCellElement errorColor
 ]

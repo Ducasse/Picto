@@ -38,7 +38,7 @@ NGGameElementTest >> testErrorsShowLivesAndGameOver [
 	self assert: element livesText equals: element game printLives.
 	element fillAtRow: 1 column: 1.
 	self assert: element livesText equals: element game printLives.
-	self assert: (element cellAtRow: 1 column: 1) childrenCount equals: 1.
+	self assert: (element cellAtRow: 1 column: 1) background paint color equals: NGCellElement errorColor.
 	element fillAtRow: 1 column: 3; fillAtRow: 3 column: 1.
 	self assert: element statusText equals: 'Game over'
 ]
