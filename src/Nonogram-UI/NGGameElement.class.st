@@ -1,8 +1,8 @@
 "
-I display a playable NGGame with Bloc elements and Toplo widgets: a toolbar with undo, restart and a timer, and a grid with the clues and the cells. Clues of satisfied lines are shown greyed on a pale green background.
+I display a playable NGGame with Bloc elements and Toplo widgets: a toolbar with restart, the lives as hearts, a timer and a status, and a grid with the clues and the cells. Clues of satisfied lines are shown greyed on a pale green background; wrongly filled cells show a red cross.
 
 Mouse: a primary click fills a cell, a secondary click crosses it.
-Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears, Cmd/Ctrl+Z undoes.
+Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears.
 
 	NGGameElement example
 "
@@ -17,7 +17,8 @@ Class {
 		'columnClueElements',
 		'cursor',
 		'timerLabel',
-		'ticker'
+		'ticker',
+		'livesLabel'
 	],
 	#category : 'Nonogram-UI-Core',
 	#package : 'Nonogram-UI',
@@ -100,11 +101,7 @@ NGGameElement >> handleKey: aKey [
 
 { #category : 'initialization' }
 NGGameElement >> installKeyboardHandlers [
-	self addEventHandlerOn: BlKeyDownEvent do: [ :event | self handleKey: event key ].
-	self addShortcut: (BlShortcutWithAction new
-		combination: BlKeyCombination primaryZ;
-		action: [ self undo ];
-		yourself)
+	self addEventHandlerOn: BlKeyDownEvent do: [ :event | self handleKey: event key ]
 ]
 
 { #category : 'keyboard' }
@@ -120,6 +117,11 @@ NGGameElement >> keyActions [
 		KeyboardKey X -> #crossAtCursor.
 		KeyboardKey backspace -> #clearAtCursor.
 		KeyboardKey delete -> #clearAtCursor }
+]
+
+{ #category : 'accessing' }
+NGGameElement >> livesText [
+	^ livesLabel text asString
 ]
 
 { #category : 'keyboard' }
@@ -195,8 +197,9 @@ NGGameElement >> newToolbar [
 			layoutConstraints horizontal fitContent.
 			layoutConstraints vertical fitContent ];
 		yourself.
-	toolbar addChild: ((ToButton labelText: 'Undo') clickAction: [ self undo ]).
 	toolbar addChild: ((ToButton labelText: 'Restart') clickAction: [ self restart ]).
+	livesLabel := ToLabel text: ''.
+	toolbar addChild: livesLabel.
 	timerLabel := ToLabel text: ''.
 	toolbar addChild: timerLabel.
 	statusLabel := ToLabel text: ''.
@@ -215,10 +218,12 @@ NGGameElement >> refresh [
 		(game isRowSatisfiedAt: index) ifTrue: [ element showSatisfied ] ifFalse: [ element showUnsatisfied ] ].
 	columnClueElements withIndexDo: [ :element :index |
 		(game isColumnSatisfiedAt: index) ifTrue: [ element showSatisfied ] ifFalse: [ element showUnsatisfied ] ].
+	livesLabel text: (game printLives asRopedText
+		foreground: Color red;
+		fontSize: NGCellElement fontSize;
+		yourself).
 	self refreshTimer.
-	statusLabel text: (game isSolved
-		ifTrue: [ 'Solved in ', game timer printElapsed ]
-		ifFalse: [ '' ])
+	statusLabel text: game statusText
 ]
 
 { #category : 'rendering' }
@@ -280,10 +285,4 @@ NGGameElement >> stopTicking [
 { #category : 'accessing' }
 NGGameElement >> timerText [
 	^ timerLabel text asString
-]
-
-{ #category : 'actions' }
-NGGameElement >> undo [
-	game undo.
-	self refresh
 ]

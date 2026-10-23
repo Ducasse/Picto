@@ -15,7 +15,13 @@ Class {
 
 { #category : 'accessing' }
 NGCellElement class >> cellSize [
-	^ 28
+
+	^ 40
+]
+
+{ #category : 'accessing' }
+NGCellElement class >> fontSize [
+	^ 20
 ]
 
 { #category : 'instance creation' }
@@ -51,14 +57,7 @@ NGCellElement >> setRow: aRow column: aColumn [
 
 { #category : 'rendering' }
 NGCellElement >> showCrossed [
-	| mark |
-	self removeChildren.
-	self background: Color veryVeryLightGray.
-	mark := ToLabel text: 'x'.
-	mark constraintsDo: [ :layoutConstraints |
-		layoutConstraints frame horizontal alignCenter.
-		layoutConstraints frame vertical alignCenter ].
-	self addChild: mark
+	self showMark: Color black
 ]
 
 { #category : 'rendering' }
@@ -70,6 +69,26 @@ NGCellElement >> showCursor [
 NGCellElement >> showFilled [
 	self removeChildren.
 	self background: Color black
+]
+
+{ #category : 'rendering' }
+NGCellElement >> showMark: aColor [
+	| mark |
+	self removeChildren.
+	self background: Color veryVeryLightGray.
+	mark := ToLabel text: ('x' asRopedText
+		foreground: aColor;
+		fontSize: self class fontSize;
+		yourself).
+	mark constraintsDo: [ :layoutConstraints |
+		layoutConstraints frame horizontal alignCenter.
+		layoutConstraints frame vertical alignCenter ].
+	self addChild: mark
+]
+
+{ #category : 'rendering' }
+NGCellElement >> showRevealedEmpty [
+	self showMark: Color red
 ]
 
 { #category : 'rendering' }

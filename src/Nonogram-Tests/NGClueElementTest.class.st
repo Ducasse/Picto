@@ -30,3 +30,10 @@ NGClueElementTest >> testSatisfiedRendering [
 	element showUnsatisfied.
 	self assert: element background paint color equals: Color transparent
 ]
+
+{ #category : 'tests' }
+NGClueElementTest >> testUsesCellFontSize [
+	| label |
+	label := (NGClueElement forRow: (NGClue blocks: #(3))) children first.
+	self assert: ((label text attributesAt: 1) anySatisfy: [ :each | each = (BlFontSizeAttribute size: NGCellElement fontSize) ])
+]

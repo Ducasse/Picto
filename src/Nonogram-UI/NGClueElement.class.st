@@ -73,7 +73,11 @@ NGClueElement >> showSatisfied [
 NGClueElement >> showTextColor: aTextColor background: aBackgroundColor [
 	self removeChildren.
 	self background: aBackgroundColor.
-	texts do: [ :each | self addChild: (ToLabel text: (each asRopedText foreground: aTextColor)) ]
+	texts do: [ :each |
+		self addChild: (ToLabel text: (each asRopedText
+			foreground: aTextColor;
+			fontSize: NGCellElement fontSize;
+			yourself)) ]
 ]
 
 { #category : 'rendering' }

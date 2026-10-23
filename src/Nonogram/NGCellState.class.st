@@ -15,6 +15,12 @@ NGCellState >> = anObject [
 ]
 
 { #category : 'transitions' }
+NGCellState >> afterClear [
+	"Return the state reached when the player clears me"
+	^ NGUnknownCell new
+]
+
+{ #category : 'transitions' }
 NGCellState >> afterCross [
 	"Return the state reached when the player uses the cross action on me"
 	^ self subclassResponsibility

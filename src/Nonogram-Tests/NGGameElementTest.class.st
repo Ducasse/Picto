@@ -29,6 +29,18 @@ NGGameElementTest >> testClickMovesCursor [
 ]
 
 { #category : 'tests' }
+NGGameElementTest >> testErrorsShowLivesAndGameOver [
+	| element |
+	element := self element.
+	self assert: element livesText equals: element game printLives.
+	element fillAtRow: 1 column: 1.
+	self assert: element livesText equals: element game printLives.
+	self assert: (element cellAtRow: 1 column: 1) childrenCount equals: 1.
+	element fillAtRow: 1 column: 3; fillAtRow: 3 column: 1.
+	self assert: element statusText equals: 'Game over'
+]
+
+{ #category : 'tests' }
 NGGameElementTest >> testKeyboardMovesCursorAndPlays [
 	| element |
 	element := self element.
@@ -64,7 +76,7 @@ NGGameElementTest >> testSatisfiedCluesAreHighlighted [
 	element fillAtRow: 1 column: 2.
 	self assert: (element rowClueElementAt: 1) background paint color equals: NGClueElement satisfiedBackgroundColor.
 	self assert: (element columnClueElementAt: 2) background paint color equals: Color transparent.
-	element undo.
+	element fillAtRow: 1 column: 2.
 	self assert: (element rowClueElementAt: 1) background paint color equals: Color transparent
 ]
 
@@ -79,23 +91,16 @@ NGGameElementTest >> testSecondaryClickCrosses [
 ]
 
 { #category : 'tests' }
-NGGameElementTest >> testSolvingAndUndo [
+NGGameElementTest >> testSolvingAndRestart [
 	| element |
 	element := self element.
 	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p | element fillAtRow: p first column: p second ].
 	self assert: (element statusText beginsWith: 'Solved in ').
-	element undo.
-	self assert: element statusText equals: ''.
 	element restart.
-	self deny: element game canUndo
+	self assert: element statusText equals: ''
 ]
 
 { #category : 'tests' }
 NGGameElementTest >> testTimerLabel [
 	self assert: self element timerText equals: '00:00'
-]
-
-{ #category : 'tests' }
-NGGameElementTest >> testUndoShortcutIsInstalled [
-	self assert: (self element shortcuts anySatisfy: [ :each | each combination = BlKeyCombination primaryZ ])
 ]
