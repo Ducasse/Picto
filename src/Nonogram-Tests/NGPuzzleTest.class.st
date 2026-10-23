@@ -59,6 +59,16 @@ NGPuzzleTest >> testLineSatisfaction [
 ]
 
 { #category : 'tests' }
+NGPuzzleTest >> testNameSizeIsLimited [
+	self
+		should: [ NGPuzzle named: (String new: NGPuzzle maxNameSize + 1 withAll: $a) fromStrings: #('#') ]
+		raise: Error.
+	self
+		shouldnt: [ NGPuzzle named: (String new: NGPuzzle maxNameSize withAll: $a) fromStrings: #('#') ]
+		raise: Error
+]
+
+{ #category : 'tests' }
 NGPuzzleTest >> testRaggedRowsAreRejected [
 	self should: [ NGPuzzle named: 'Bad' fromStrings: #('##' '#') ] raise: Error
 ]

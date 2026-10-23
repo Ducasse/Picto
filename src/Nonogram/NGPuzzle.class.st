@@ -21,7 +21,7 @@ $# is a filled cell, any other character an empty one.
 Internal Representation and Key Implementation Points.
 
 Instance Variables
-	name:			<String> the name of the puzzle, used as its identity in a library
+	name:			<String> the name of the puzzle, used as its identity in a library; at most #maxNameSize characters so it fits in the picker
 	solution:		<Array of Arrays of Booleans> the rows of the picture, all of the same size
 	rowClues:		<Array of NGClue> one clue per row
 	columnClues:	<Array of NGClue> one clue per column
@@ -41,6 +41,12 @@ Class {
 	#package : 'Nonogram',
 	#tag : 'Core'
 }
+
+{ #category : 'constants' }
+NGPuzzle class >> maxNameSize [
+	"Answer the maximum number of characters of a puzzle name, so that it fits in the puzzle picker"
+	^ 16
+]
 
 { #category : 'instance creation' }
 NGPuzzle class >> named: aString fromStrings: aCollectionOfStrings [
@@ -126,6 +132,8 @@ NGPuzzle >> rowClues [
 NGPuzzle >> setName: aString solution: anArrayOfRows [
 	(anArrayOfRows collect: [ :row | row size ]) asSet size = 1
 		ifFalse: [ self error: 'All rows of a puzzle must have the same size' ].
+	aString size > self class maxNameSize
+		ifTrue: [ self error: 'A puzzle name must have at most ' , self class maxNameSize printString , ' characters' ].
 	name := aString.
 	solution := anArrayOfRows.
 	rowClues := solution collect: [ :row | NGClue fromLine: row ].

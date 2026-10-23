@@ -294,20 +294,7 @@ NGGameElement >> newToolbar [
 { #category : 'opening' }
 NGGameElement >> open [
 	"Open me in a new window that keeps fitting my size, clues, lives and toolbar included"
-	| space |
-	self forceLayout.
-	space := BlSpace new.
-	space
-		title: game puzzle name;
-		extent: self extent ceiling.
-	space root
-		background: NGPalette background;
-		addChild: self.
-	self
-		addEventHandlerOn: BlElementExtentChangedEvent
-		do: [ :event | space extent: self extent ceiling ].
-	space show.
-	^ space
+	^ NGWindow open: self titled: game puzzle name
 ]
 
 { #category : 'rendering' }

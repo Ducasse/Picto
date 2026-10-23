@@ -182,10 +182,16 @@ NGPuzzles class >> lighthouse [
 ]
 
 { #category : 'puzzles' }
-NGPuzzles class >> lighthouseOnARock [
+NGPuzzles class >> plus [
+	<puzzle>
+	^ NGPuzzle named: 'Plus' fromStrings: #('.#.' '###' '.#.')
+]
+
+{ #category : 'puzzles' }
+NGPuzzles class >> rockLighthouse [
 	<puzzle>
 	^ NGPuzzle
-		named: 'Lighthouse on a rock'
+		named: 'Rock lighthouse'
 		fromStrings: #(
 			'.......#.......'
 			'......###......'
@@ -202,12 +208,6 @@ NGPuzzles class >> lighthouseOnARock [
 			'..###########..'
 			'.#.#.#.#.#.#.#.'
 			'#.#.#.#.#.#.#.#' )
-]
-
-{ #category : 'puzzles' }
-NGPuzzles class >> plus [
-	<puzzle>
-	^ NGPuzzle named: 'Plus' fromStrings: #('.#.' '###' '.#.')
 ]
 
 { #category : 'puzzles' }
