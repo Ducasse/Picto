@@ -28,6 +28,11 @@ NGCellElement >> column [
 	^ column
 ]
 
+{ #category : 'rendering' }
+NGCellElement >> hideCursor [
+	self border: (BlBorder paint: Color gray width: 1)
+]
+
 { #category : 'accessing' }
 NGCellElement >> row [
 	^ row
@@ -54,6 +59,11 @@ NGCellElement >> showCrossed [
 		layoutConstraints frame horizontal alignCenter.
 		layoutConstraints frame vertical alignCenter ].
 	self addChild: mark
+]
+
+{ #category : 'rendering' }
+NGCellElement >> showCursor [
+	self border: (BlBorder paint: Color blue width: 3)
 ]
 
 { #category : 'rendering' }

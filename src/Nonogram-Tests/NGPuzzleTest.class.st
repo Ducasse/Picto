@@ -33,6 +33,23 @@ NGPuzzleTest >> testIsSolvedBy [
 ]
 
 { #category : 'tests' }
+NGPuzzleTest >> testLineSatisfaction [
+
+	| puzzle board |
+	puzzle := NGPuzzle named: 'Plus' fromStrings: #( '.#.' '###' '.#.' ).
+	board := NGBoard for: puzzle.
+	self deny: (puzzle isRowSatisfiedAt: 1 by: board).
+	board atRow: 1 column: 2 put: NGFilledCell new.
+	self assert: (puzzle isRowSatisfiedAt: 1 by: board).
+	self deny: (puzzle isColumnSatisfiedAt: 2 by: board).
+	board atRow: 2 column: 2 put: NGFilledCell new.
+	board atRow: 3 column: 2 put: NGFilledCell new.
+	self assert: (puzzle isColumnSatisfiedAt: 2 by: board).
+	board atRow: 1 column: 1 put: NGFilledCell new.
+	self deny: (puzzle isRowSatisfiedAt: 1 by: board)
+]
+
+{ #category : 'tests' }
 NGPuzzleTest >> testRaggedRowsAreRejected [
 	self should: [ NGPuzzle named: 'Bad' fromStrings: #('##' '#') ] raise: Error
 ]

@@ -7,6 +7,16 @@ Class {
 }
 
 { #category : 'tests' }
+NGCellElementTest >> testCursorRendering [
+	| cell |
+	cell := NGCellElement row: 1 column: 1.
+	cell showCursor.
+	self assert: cell border width equals: 3.
+	cell hideCursor.
+	self assert: cell border width equals: 1
+]
+
+{ #category : 'tests' }
 NGCellElementTest >> testRendering [
 	| cell |
 	cell := NGCellElement row: 2 column: 3.

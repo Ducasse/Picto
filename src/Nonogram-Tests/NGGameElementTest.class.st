@@ -21,6 +21,32 @@ NGGameElementTest >> testCellsAreBuilt [
 ]
 
 { #category : 'tests' }
+NGGameElementTest >> testClickMovesCursor [
+	| element |
+	element := self element.
+	(element cellAtRow: 3 column: 2) dispatchEvent: (BlPrimaryClickEvent new button: BlMouseButton primary; yourself).
+	self assert: (element cursor isAtRow: 3 column: 2)
+]
+
+{ #category : 'tests' }
+NGGameElementTest >> testKeyboardMovesCursorAndPlays [
+	| element |
+	element := self element.
+	self assert: (element cellAtRow: 1 column: 1) border width equals: 3.
+	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey right; yourself).
+	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey down; yourself).
+	self assert: (element cursor isAtRow: 2 column: 2).
+	self assert: (element cellAtRow: 2 column: 2) border width equals: 3.
+	self assert: (element cellAtRow: 1 column: 1) border width equals: 1.
+	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey space; yourself).
+	self assert: (element game board atRow: 2 column: 2) equals: NGFilledCell new.
+	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey X; yourself).
+	self assert: (element game board atRow: 2 column: 2) equals: NGCrossedCell new.
+	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey backspace; yourself).
+	self assert: (element game board atRow: 2 column: 2) equals: NGUnknownCell new
+]
+
+{ #category : 'tests' }
 NGGameElementTest >> testPrimaryClickFills [
 	| element cell |
 	element := self element.
@@ -28,6 +54,18 @@ NGGameElementTest >> testPrimaryClickFills [
 	cell dispatchEvent: (BlPrimaryClickEvent new button: BlMouseButton primary; yourself).
 	self assert: (element game board atRow: 2 column: 2) equals: NGFilledCell new.
 	self assert: cell background paint color equals: Color black
+]
+
+{ #category : 'tests' }
+NGGameElementTest >> testSatisfiedCluesAreHighlighted [
+	| element |
+	element := self element.
+	self assert: (element rowClueElementAt: 1) background paint color equals: Color transparent.
+	element fillAtRow: 1 column: 2.
+	self assert: (element rowClueElementAt: 1) background paint color equals: NGClueElement satisfiedBackgroundColor.
+	self assert: (element columnClueElementAt: 2) background paint color equals: Color transparent.
+	element undo.
+	self assert: (element rowClueElementAt: 1) background paint color equals: Color transparent
 ]
 
 { #category : 'tests' }
@@ -45,9 +83,19 @@ NGGameElementTest >> testSolvingAndUndo [
 	| element |
 	element := self element.
 	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p | element fillAtRow: p first column: p second ].
-	self assert: element statusText equals: 'Solved!'.
+	self assert: (element statusText beginsWith: 'Solved in ').
 	element undo.
 	self assert: element statusText equals: ''.
 	element restart.
 	self deny: element game canUndo
+]
+
+{ #category : 'tests' }
+NGGameElementTest >> testTimerLabel [
+	self assert: self element timerText equals: '00:00'
+]
+
+{ #category : 'tests' }
+NGGameElementTest >> testUndoShortcutIsInstalled [
+	self assert: (self element shortcuts anySatisfy: [ :each | each combination = BlKeyCombination primaryZ ])
 ]

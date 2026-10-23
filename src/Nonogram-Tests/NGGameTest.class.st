@@ -12,6 +12,17 @@ NGGameTest >> game [
 ]
 
 { #category : 'tests' }
+NGGameTest >> testLineSatisfaction [
+
+	| game |
+	game := self game.
+	self deny: (game isRowSatisfiedAt: 1).
+	game toggleFillAtRow: 1 column: 2.
+	self assert: (game isRowSatisfiedAt: 1).
+	self deny: (game isColumnSatisfiedAt: 2)
+]
+
+{ #category : 'tests' }
 NGGameTest >> testNoOpMovesAreNotRecorded [
 	| game |
 	game := self game.
@@ -37,6 +48,23 @@ NGGameTest >> testSolving [
 	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p | game toggleFillAtRow: p first column: p second ].
 	game toggleCrossAtRow: 1 column: 1.
 	self assert: game isSolved
+]
+
+{ #category : 'tests' }
+NGGameTest >> testTimerRunsFromFirstMoveUntilSolved [
+	| time game |
+	time := DateAndTime year: 2026 month: 1 day: 1.
+	game := NGGame on: (NGPuzzle named: 'Plus' fromStrings: #('.#.' '###' '.#.')) timer: (NGTimer clock: [ time ]).
+	time := time + 10 seconds.
+	self assert: game timer elapsed equals: Duration zero.
+	#(#(1 2) #(2 1) #(2 2) #(2 3) #(3 2)) do: [ :p |
+		game toggleFillAtRow: p first column: p second.
+		time := time + 1 second ].
+	self assert: game isSolved.
+	time := time + 100 seconds.
+	self assert: game timer elapsed equals: 4 seconds.
+	game restart.
+	self assert: game timer elapsed equals: Duration zero
 ]
 
 { #category : 'tests' }

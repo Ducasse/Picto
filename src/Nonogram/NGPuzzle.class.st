@@ -48,16 +48,29 @@ NGPuzzle >> height [
 	^ solution size
 ]
 
+{ #category : 'testing' }
+NGPuzzle >> isColumnSatisfiedAt: anIndex by: aBoard [
+
+	^ (columnClues at: anIndex) isSatisfiedBy: (aBoard filledColumnAt: anIndex)
+]
+
 { #category : 'solution' }
 NGPuzzle >> isFilledAtRow: aRow column: aColumn [
 	^ (solution at: aRow) at: aColumn
 ]
 
-{ #category : 'solution' }
+{ #category : 'testing' }
+NGPuzzle >> isRowSatisfiedAt: anIndex by: aBoard [
+
+	^ (rowClues at: anIndex) isSatisfiedBy: (aBoard filledRowAt: anIndex)
+]
+
+{ #category : 'testing' }
 NGPuzzle >> isSolvedBy: aBoard [
 	"Accept any board whose lines satisfy all clues, not only the stored solution"
-	^ ((1 to: self height) allSatisfy: [ :index | (rowClues at: index) isSatisfiedBy: (aBoard filledRowAt: index) ])
-		and: [ (1 to: self width) allSatisfy: [ :index | (columnClues at: index) isSatisfiedBy: (aBoard filledColumnAt: index) ] ]
+
+	^ ((1 to: self height) allSatisfy: [ :index | self isRowSatisfiedAt: index by: aBoard ]) and: [
+		  (1 to: self width) allSatisfy: [ :index | self isColumnSatisfiedAt: index by: aBoard ] ]
 ]
 
 { #category : 'accessing' }
