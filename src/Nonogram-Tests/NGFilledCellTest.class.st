@@ -1,0 +1,15 @@
+Class {
+	#name : 'NGFilledCellTest',
+	#superclass : 'TestCase',
+	#category : 'Nonogram-Tests-Core',
+	#package : 'Nonogram-Tests',
+	#tag : 'Core'
+}
+
+{ #category : 'tests' }
+NGFilledCellTest >> testTransitions [
+	self assert: NGFilledCell new afterFill equals: NGUnknownCell new.
+	self assert: NGFilledCell new afterCross equals: NGCrossedCell new.
+	self assert: NGFilledCell new isFilled.
+	self assert: NGFilledCell new printString equals: '#'
+]
