@@ -1,5 +1,17 @@
 "
-I represent a cell the player has filled (painted).
+I am the state of a cell the player has filled.
+
+Responsibility: count as filled; go back to unknown on a fill and become crossed on a cross; render as a black cell.
+
+Collaborators: NGCellState, NGCellElement.
+
+Public API and Key Messages: #isFilled, #afterFill, #afterCross, #renderOn:
+
+	NGFilledCell new isFilled >>> true
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGFilledCell',

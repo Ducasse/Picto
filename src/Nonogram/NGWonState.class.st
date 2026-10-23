@@ -1,5 +1,17 @@
 "
-I am the state of a solved game: I ignore the player's actions.
+I am the state of a solved game.
+
+Responsibility: ignore the player's actions; answer a status with the solving time.
+
+Collaborators: NGGame, NGTimer.
+
+Public API and Key Messages: #statusTextIn: answers 'Solved in mm:ss'
+
+	NGWonState new statusTextIn: aGame
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGWonState',

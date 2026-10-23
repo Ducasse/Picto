@@ -1,7 +1,27 @@
 "
-I measure the time a player spends on a puzzle. I am idle until started, then running until stopped. My clock is a block answering the current DateAndTime, so tests can inject a fake one.
+I measure the time a player spends on a puzzle.
+
+Responsibility:
+- start, stop and reset
+- answer the elapsed time, and print it as mm:ss (minutes go beyond 59)
+
+Collaborators: NGTimerState subclasses to which I delegate; NGGame owns me.
+
+Public API and Key Messages:
+- NGTimer class >> #new (real clock) and #clock: (injected clock) create me
+- #start, #stop, #reset, #elapsed, #printElapsed
 
 	NGTimer new start; elapsed
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	clock:		<BlockClosure> answers the current DateAndTime; tests inject a fake one
+	state:		<NGTimerState> idle, running or stopped
+	startTime:	<DateAndTime> when I was started
+	endTime:	<DateAndTime> when I was stopped
+
+startTime and endTime are only read by the states for which they were set, so no nil test is needed.
 "
 Class {
 	#name : 'NGTimer',

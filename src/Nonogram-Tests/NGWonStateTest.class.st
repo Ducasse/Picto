@@ -1,3 +1,6 @@
+"
+I test NGWonState.
+"
 Class {
 	#name : 'NGWonStateTest',
 	#superclass : 'TestCase',

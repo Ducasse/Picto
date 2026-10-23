@@ -1,3 +1,6 @@
+"
+I test NGBoard.
+"
 Class {
 	#name : 'NGBoardTest',
 	#superclass : 'TestCase',

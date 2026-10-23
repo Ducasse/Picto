@@ -1,3 +1,6 @@
+"
+I test NGPuzzle.
+"
 Class {
 	#name : 'NGPuzzleTest',
 	#superclass : 'TestCase',
@@ -20,6 +23,12 @@ NGPuzzleTest >> testClues [
 	self assert: (puzzle rowClueAt: 2) equals: (NGClue blocks: #(3)).
 	self assert: (puzzle columnClueAt: 1) equals: (NGClue blocks: #(1)).
 	self assert: (puzzle isFilledAtRow: 1 column: 2)
+]
+
+{ #category : 'tests' }
+NGPuzzleTest >> testHasUniqueSolution [
+	self assert: NGPuzzles plus hasUniqueSolution.
+	self deny: (NGPuzzle named: 'Diagonal' fromStrings: #('#.' '.#')) hasUniqueSolution
 ]
 
 { #category : 'tests' }

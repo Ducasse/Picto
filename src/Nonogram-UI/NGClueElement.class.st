@@ -1,7 +1,23 @@
 "
-I display the clue of one row or column. A column clue stacks its numbers vertically, a row clue shows them on one line. When the line matches its clue I am shown satisfied: grey numbers on a pale green background.
+I display the clue of one row or column.
+
+Responsibility:
+- show the numbers of a clue: stacked for a column, on one line for a row
+- show myself satisfied (grey numbers on a pale green background) or not
+
+Collaborators: NGClue; NGGameElement creates and updates me.
+
+Public API and Key Messages:
+- NGClueElement class >> #forColumn: and #forRow: create me
+- #showSatisfied, #showUnsatisfied
 
 	NGClueElement forColumn: (NGClue blocks: #(2 1))
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	clue:	<NGClue> the displayed clue
+	texts:	<Array of Strings> the texts of my labels
 "
 Class {
 	#name : 'NGClueElement',

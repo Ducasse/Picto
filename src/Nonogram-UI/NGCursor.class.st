@@ -1,7 +1,23 @@
 "
-I am the keyboard cursor on a grid of height x width cells. I start at row 1, column 1 and stop at the edges rather than wrapping around.
+I am the keyboard cursor on a grid.
+
+Responsibility: hold the current cell and move it, stopping at the edges rather than wrapping around.
+
+Collaborators: NGGameElement owns and draws me.
+
+Public API and Key Messages:
+- NGCursor class >> #height:width: creates me at row 1, column 1
+- #moveUp, #moveDown, #moveLeft, #moveRight, #moveToRow:column:, #row, #column, #isAtRow:column:
 
 	(NGCursor height: 5 width: 5) moveRight; column
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	row:		<Integer> the current row
+	column:	<Integer> the current column
+	height:	<Integer> the number of rows of the grid
+	width:	<Integer> the number of columns of the grid
 "
 Class {
 	#name : 'NGCursor',

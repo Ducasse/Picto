@@ -1,3 +1,6 @@
+"
+I test NGPlayingState.
+"
 Class {
 	#name : 'NGPlayingStateTest',
 	#superclass : 'TestCase',

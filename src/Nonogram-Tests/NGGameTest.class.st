@@ -1,3 +1,6 @@
+"
+I test NGGame.
+"
 Class {
 	#name : 'NGGameTest',
 	#superclass : 'TestCase',

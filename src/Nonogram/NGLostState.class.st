@@ -1,5 +1,17 @@
 "
-I am the state of a game where the player lost all lives: I ignore the player's actions.
+I am the state of a game where the player lost all lives.
+
+Responsibility: ignore the player's actions; answer 'Game over' as status.
+
+Collaborators: NGGame.
+
+Public API and Key Messages: #statusTextIn:
+
+	NGLostState new statusTextIn: aGame >>> 'Game over'
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGLostState',

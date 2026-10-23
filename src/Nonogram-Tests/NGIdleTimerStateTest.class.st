@@ -1,3 +1,6 @@
+"
+I test NGIdleTimerState.
+"
 Class {
 	#name : 'NGIdleTimerStateTest',
 	#superclass : 'TestCase',

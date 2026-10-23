@@ -1,3 +1,6 @@
+"
+I test NGClueElement.
+"
 Class {
 	#name : 'NGClueElementTest',
 	#superclass : 'TestCase',

@@ -1,5 +1,17 @@
 "
-I am the state of a game in progress: I forward the player's actions to the game.
+I am the state of a game in progress.
+
+Responsibility: forward the player's actions to the game; answer an empty status.
+
+Collaborators: NGGame.
+
+Public API and Key Messages: #fillAtRow:column:in:, #crossAtRow:column:in:, #clearAtRow:column:in:, #statusTextIn:
+
+	NGPlayingState new fillAtRow: 1 column: 1 in: aGame
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGPlayingState',

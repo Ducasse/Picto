@@ -1,5 +1,17 @@
 "
 I am the state of a timer that is counting.
+
+Responsibility: ignore start; on stop, mark the end time and become stopped; answer the time since the start.
+
+Collaborators: NGTimer, NGStoppedTimerState.
+
+Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+
+	NGRunningTimerState new elapsedIn: aTimer
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGRunningTimerState',

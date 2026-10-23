@@ -1,3 +1,6 @@
+"
+I test NGCellElement.
+"
 Class {
 	#name : 'NGCellElementTest',
 	#superclass : 'TestCase',

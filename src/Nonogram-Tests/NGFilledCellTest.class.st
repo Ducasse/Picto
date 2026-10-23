@@ -1,3 +1,6 @@
+"
+I test NGFilledCell.
+"
 Class {
 	#name : 'NGFilledCellTest',
 	#superclass : 'TestCase',

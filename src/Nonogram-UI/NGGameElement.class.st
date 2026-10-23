@@ -1,10 +1,34 @@
 "
-I display a playable NGGame with Bloc elements and Toplo widgets: a toolbar with restart, the lives as hearts, a timer and a status, and a grid with the clues and the cells. Clues of satisfied lines are shown greyed on a pale green background; wrongly filled cells show a red cross.
+I display a playable NGGame with Bloc elements and Toplo widgets.
+
+Responsibility:
+- show a toolbar with restart, the lives as hearts, a timer and a status
+- show the grid with the clues and the cells, highlighting satisfied clues
+- turn mouse clicks and keys into game actions
 
 Mouse: a primary click fills a cell, a secondary click crosses it.
 Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears.
 
+Collaborators: NGGame, NGCellElement, NGClueElement, NGCursor.
+
+Public API and Key Messages:
+- NGGameElement class >> #on: creates me; #example opens one
+- #fillAtRow:column:, #crossAtRow:column:, #clearAtRow:column:, #restart, #refresh
+
 	NGGameElement example
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	game:				<NGGame> the displayed game
+	cells:				<Array of Arrays of NGCellElement> the cell elements by row
+	rowClueElements:		<Array of NGClueElement> one per row
+	columnClueElements:	<Array of NGClueElement> one per column
+	cursor:				<NGCursor> the keyboard cursor
+	statusLabel:			<ToLabel> shows the game status
+	timerLabel:			<ToLabel> shows the elapsed time
+	livesLabel:			<ToLabel> shows the lives as hearts
+	ticker:				<BlRepeatedTaskAction> refreshes the timer every second while I am in a space
 "
 Class {
 	#name : 'NGGameElement',
@@ -28,9 +52,7 @@ Class {
 { #category : 'examples' }
 NGGameElement class >> example [
 	<script>
-	(self on: (NGGame on: (NGPuzzle
-		named: 'Heart'
-		fromStrings: #('.##.##.' '#######' '#######' '.#####.' '..###..' '...#...')))) openInNewSpace
+	(self on: (NGGame on: (NGPuzzleLibrary default puzzleNamed: 'Heart'))) openInNewSpace
 ]
 
 { #category : 'instance creation' }

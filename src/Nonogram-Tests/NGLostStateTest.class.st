@@ -1,3 +1,6 @@
+"
+I test NGLostState.
+"
 Class {
 	#name : 'NGLostStateTest',
 	#superclass : 'TestCase',

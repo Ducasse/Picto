@@ -1,5 +1,17 @@
 "
-I am the abstract state of an NGTimer. My subclasses are NGIdleTimerState, NGRunningTimerState and NGStoppedTimerState. The timer delegates start, stop and elapsed to me, so it never has to test whether it was started.
+I am the abstract state of an NGTimer.
+
+Responsibility: answer the state reached on start and on stop, and the elapsed time of the timer.
+
+Collaborators: NGTimer; my subclasses NGIdleTimerState, NGRunningTimerState and NGStoppedTimerState.
+
+Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+
+	NGIdleTimerState new elapsedIn: aTimer >>> Duration zero
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables.
 "
 Class {
 	#name : 'NGTimerState',

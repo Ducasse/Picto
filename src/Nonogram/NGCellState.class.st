@@ -1,5 +1,21 @@
 "
-I am the abstract state of a cell on a player's board. My subclasses are NGUnknownCell, NGFilledCell and NGCrossedCell. States are stateless and compared by class, so behavior is chosen by polymorphism rather than by testing.
+I am the abstract state of a cell on a player's board.
+
+Responsibility:
+- answer the state reached after a fill, cross or clear action
+- tell whether I count as filled
+- render myself on a cell element
+
+Collaborators: my subclasses NGUnknownCell, NGFilledCell, NGCrossedCell and NGRevealedEmptyCell; NGBoard stores me; NGCellElement displays me.
+
+Public API and Key Messages:
+- #afterFill, #afterCross, #afterClear, #isFilled, #renderOn:, #character
+
+	NGUnknownCell new afterFill >>> NGFilledCell new
+
+Internal Representation and Key Implementation Points.
+
+I have no instance variables. States are compared by class, so behavior is chosen by polymorphism rather than by testing.
 "
 Class {
 	#name : 'NGCellState',

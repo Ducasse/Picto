@@ -1,5 +1,22 @@
 "
-I am the player's board: a grid of NGCellState, all unknown at start. Positions are given as row and column, both 1-based.
+I am the player's board: a grid of cell states, all unknown at start.
+
+Responsibility:
+- store and answer the state of each cell
+- answer rows and columns, and which of their cells are filled
+
+Collaborators: NGCellState subclasses as cell values; NGGame changes me; NGPuzzle judges me.
+
+Public API and Key Messages:
+- NGBoard class >> #for: and #height:width: create me
+- #atRow:column:, #atRow:column:put:, #filledRowAt:, #filledColumnAt:, #reset
+
+	(NGBoard height: 2 width: 3) atRow: 1 column: 2 put: NGFilledCell new
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	rows:	<Array of Arrays of NGCellState> the grid; positions are 1-based row and column
 "
 Class {
 	#name : 'NGBoard',

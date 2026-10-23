@@ -1,3 +1,6 @@
+"
+I test NGRevealedEmptyCell.
+"
 Class {
 	#name : 'NGRevealedEmptyCellTest',
 	#superclass : 'TestCase',

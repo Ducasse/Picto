@@ -1,5 +1,23 @@
 "
-I display one cell of the board. My cell state tells me how to look through #renderOn:.
+I display one cell of the board.
+
+Responsibility:
+- show a cell as unknown, filled, crossed or revealed empty, as asked by its cell state
+- show or hide the keyboard cursor
+
+Collaborators: NGCellState subclasses call me through #renderOn:; NGGameElement creates me.
+
+Public API and Key Messages:
+- NGCellElement class >> #row:column: creates me; #cellSize and #fontSize give the sizes
+- #showUnknown, #showFilled, #showCrossed, #showRevealedEmpty, #showCursor, #hideCursor
+
+	NGFilledCell new renderOn: (NGCellElement row: 1 column: 1)
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	row:		<Integer> my row on the board
+	column:	<Integer> my column on the board
 "
 Class {
 	#name : 'NGCellElement',

@@ -1,3 +1,6 @@
+"
+I test NGCrossedCell.
+"
 Class {
 	#name : 'NGCrossedCellTest',
 	#superclass : 'TestCase',

@@ -1,3 +1,6 @@
+"
+I test NGCursor.
+"
 Class {
 	#name : 'NGCursorTest',
 	#superclass : 'TestCase',

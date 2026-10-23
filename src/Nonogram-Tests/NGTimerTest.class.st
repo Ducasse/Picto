@@ -1,3 +1,6 @@
+"
+I test NGTimer.
+"
 Class {
 	#name : 'NGTimerTest',
 	#superclass : 'TestCase',

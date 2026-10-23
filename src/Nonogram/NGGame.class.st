@@ -1,11 +1,33 @@
 "
-I am a play session on a puzzle. I apply the player's actions (fill, cross, clear) to a board through my state (playing, won or lost) and tell when the puzzle is solved.
+I am a play session on a puzzle.
 
-Filling a cell that is empty in the stored solution is an error: the fill is refused, the cell is revealed as empty and locked, and the player loses one of my lives. Crosses are only the player's hypotheses and are never judged. When no life is left the game is lost.
+Responsibility:
+- apply the player's fill, cross and clear actions to a board
+- refuse a fill on a cell that is empty in the stored solution, reveal that cell and take a life
+- tell when the puzzle is solved (each line matches its clue) or lost (no life left)
+- run a timer from the first action until the game is won or lost
+- restart the game
 
-The puzzle is solved when each line of the board matches its clue.
+Collaborators: NGPuzzle, NGBoard, NGTimer, and NGGameState subclasses to which actions are delegated.
 
-I own an NGTimer that starts with the first action, stops when the game is won or lost, and is reset on restart.
+Public API and Key Messages:
+- NGGame class >> #on:, #on:lives: and #on:lives:timer: create me (3 lives by default)
+- #toggleFillAtRow:column:, #toggleCrossAtRow:column:, #clearAtRow:column:, #restart
+- #isSolved, #isRowSatisfiedAt:, #isColumnSatisfiedAt:, #livesLeft, #printLives, #statusText, #timer
+
+	(NGGame on: NGPuzzles plus) toggleFillAtRow: 2 column: 2
+
+Internal Representation and Key Implementation Points.
+
+Instance Variables
+	puzzle:		<NGPuzzle> the puzzle being played
+	board:		<NGBoard> the player's grid
+	timer:		<NGTimer> the time spent on the game
+	lives:		<Integer> the number of lives at start
+	livesLeft:	<Integer> the number of lives remaining
+	state:		<NGGameState> playing, won or lost; won and lost ignore the actions
+
+Crosses are never judged; only fills are checked against the stored solution.
 "
 Class {
 	#name : 'NGGame',

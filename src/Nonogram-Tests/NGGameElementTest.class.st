@@ -1,3 +1,6 @@
+"
+I test NGGameElement.
+"
 Class {
 	#name : 'NGGameElementTest',
 	#superclass : 'TestCase',
