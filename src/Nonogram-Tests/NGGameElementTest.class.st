@@ -35,10 +35,12 @@ NGGameElementTest >> testClickMovesCursor [
 NGGameElementTest >> testErrorsShowLivesAndGameOver [
 	| element |
 	element := self element.
-	self assert: element livesText equals: element game printLives.
+	self assert: (element livesElement children collect: [ :each | each background paint color ]) asArray
+		equals: (Array new: 3 withAll: NGPalette heart).
 	element fillAtRow: 1 column: 1.
-	self assert: element livesText equals: element game printLives.
-	self assert: (element cellAtRow: 1 column: 1) background paint color equals: NGCellElement errorColor.
+	self assert: element livesElement childrenCount equals: 3.
+	self assert: element livesElement children last background paint color equals: Color transparent.
+	self assert: (element cellAtRow: 1 column: 1) background paint color equals: NGPalette errorCell.
 	element fillAtRow: 1 column: 3; fillAtRow: 3 column: 1.
 	self assert: element statusText equals: 'Game over'
 ]
@@ -47,12 +49,12 @@ NGGameElementTest >> testErrorsShowLivesAndGameOver [
 NGGameElementTest >> testKeyboardMovesCursorAndPlays [
 	| element |
 	element := self element.
-	self assert: (element cellAtRow: 1 column: 1) border width equals: 3.
+	self assert: (element cellAtRow: 1 column: 1) border width equals: 2.
 	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey right; yourself).
 	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey down; yourself).
 	self assert: (element cursor isAtRow: 2 column: 2).
-	self assert: (element cellAtRow: 2 column: 2) border width equals: 3.
-	self assert: (element cellAtRow: 1 column: 1) border width equals: 1.
+	self assert: (element cellAtRow: 2 column: 2) border width equals: 2.
+	self assert: (element cellAtRow: 1 column: 1) border width equals: 0.
 	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey space; yourself).
 	self assert: (element game board atRow: 2 column: 2) equals: NGFilledCell new.
 	element dispatchEvent: (BlKeyDownEvent new key: KeyboardKey X; yourself).
@@ -68,7 +70,7 @@ NGGameElementTest >> testPrimaryClickFills [
 	cell := element cellAtRow: 2 column: 2.
 	cell dispatchEvent: (BlPrimaryClickEvent new button: BlMouseButton primary; yourself).
 	self assert: (element game board atRow: 2 column: 2) equals: NGFilledCell new.
-	self assert: cell background paint color equals: Color black
+	self assert: cell background paint color equals: NGPalette filledCell
 ]
 
 { #category : 'tests' }
@@ -77,7 +79,7 @@ NGGameElementTest >> testSatisfiedCluesAreHighlighted [
 	element := self element.
 	self assert: (element rowClueElementAt: 1) background paint color equals: Color transparent.
 	element fillAtRow: 1 column: 2.
-	self assert: (element rowClueElementAt: 1) background paint color equals: NGClueElement satisfiedBackgroundColor.
+	self assert: (element rowClueElementAt: 1) background paint color equals: NGPalette satisfiedClueBackground.
 	self assert: (element columnClueElementAt: 2) background paint color equals: Color transparent.
 	element fillAtRow: 1 column: 2.
 	self assert: (element rowClueElementAt: 1) background paint color equals: Color transparent

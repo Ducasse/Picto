@@ -28,7 +28,7 @@ NGClueElementTest >> testSatisfiedRendering [
 	element := NGClueElement forRow: (NGClue blocks: #(3)).
 	self assert: element background paint color equals: Color transparent.
 	element showSatisfied.
-	self assert: element background paint color equals: NGClueElement satisfiedBackgroundColor.
+	self assert: element background paint color equals: NGPalette satisfiedClueBackground.
 	self assert: element childrenCount equals: 1.
 	element showUnsatisfied.
 	self assert: element background paint color equals: Color transparent

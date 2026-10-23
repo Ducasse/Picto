@@ -37,11 +37,6 @@ NGCellElement class >> cellSize [
 	^ 40
 ]
 
-{ #category : 'colors' }
-NGCellElement class >> errorColor [
-	^ Color r: 0.95 g: 0.6 b: 0.6
-]
-
 { #category : 'accessing' }
 NGCellElement class >> fontSize [
 	^ 20
@@ -59,7 +54,7 @@ NGCellElement >> column [
 
 { #category : 'rendering' }
 NGCellElement >> hideCursor [
-	self border: (BlBorder paint: Color gray width: 1)
+	self border: BlBorder empty
 ]
 
 { #category : 'accessing' }
@@ -73,43 +68,41 @@ NGCellElement >> setRow: aRow column: aColumn [
 	column := aColumn.
 	self
 		layout: BlFrameLayout new;
-		extent: self class cellSize asPoint;
-		border: (BlBorder paint: Color gray width: 1).
+		extent: self class cellSize asPoint.
 	self showUnknown
 ]
 
 { #category : 'rendering' }
 NGCellElement >> showCrossed [
-
 	| mark |
 	self removeChildren.
-	self background: Color white.
-	mark := ToLabel text: ('x' asRopedText fontSize: self class fontSize).
+	self background: NGPalette emptyCell.
+	mark := NGIcons cross.
 	mark constraintsDo: [ :layoutConstraints |
-			layoutConstraints frame horizontal alignCenter.
-			layoutConstraints frame vertical alignCenter ].
+		layoutConstraints frame horizontal alignCenter.
+		layoutConstraints frame vertical alignCenter ].
 	self addChild: mark
 ]
 
 { #category : 'rendering' }
 NGCellElement >> showCursor [
-	self border: (BlBorder paint: Color blue width: 3)
+	self border: (BlBorder paint: NGPalette cursor width: 2)
 ]
 
 { #category : 'rendering' }
 NGCellElement >> showFilled [
 	self removeChildren.
-	self background: Color black
+	self background: NGPalette filledCell
 ]
 
 { #category : 'rendering' }
 NGCellElement >> showRevealedEmpty [
 	self removeChildren.
-	self background: self class errorColor
+	self background: NGPalette errorCell
 ]
 
 { #category : 'rendering' }
 NGCellElement >> showUnknown [
 	self removeChildren.
-	self background: Color white
+	self background: NGPalette emptyCell
 ]

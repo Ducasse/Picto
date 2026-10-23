@@ -27,7 +27,7 @@ Instance Variables
 	cursor:				<NGCursor> the keyboard cursor
 	statusLabel:			<ToLabel> shows the game status
 	timerLabel:			<ToLabel> shows the elapsed time
-	livesLabel:			<ToLabel> shows the lives as hearts
+	livesElement:			<BlElement> shows one heart icon per life, full or empty
 	ticker:				<BlRepeatedTaskAction> refreshes the timer every second while I am in a space
 "
 Class {
@@ -42,7 +42,7 @@ Class {
 		'cursor',
 		'timerLabel',
 		'ticker',
-		'livesLabel'
+		'livesElement'
 	],
 	#category : 'Nonogram-UI-Core',
 	#package : 'Nonogram-UI',
@@ -142,8 +142,8 @@ NGGameElement >> keyActions [
 ]
 
 { #category : 'accessing' }
-NGGameElement >> livesText [
-	^ livesLabel text asString
+NGGameElement >> livesElement [
+	^ livesElement
 ]
 
 { #category : 'keyboard' }
@@ -171,6 +171,29 @@ NGGameElement >> moveCursorUp [
 ]
 
 { #category : 'building' }
+NGGameElement >> newBoard [
+	| puzzle board |
+	puzzle := game puzzle.
+	board := BlElement new
+		layout: (BlGridLayout horizontal columnCount: puzzle width; cellSpacing: 0; yourself);
+		background: NGPalette gridLine;
+		padding: (BlInsets all: NGPalette border);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
+	cells do: [ :rowCells |
+		rowCells do: [ :cell |
+			cell margin: (BlInsets
+				top: 0
+				right: (NGPalette gapAfter: cell column of: puzzle width)
+				bottom: (NGPalette gapAfter: cell row of: puzzle height)
+				left: 0).
+			board addChild: cell ] ].
+	^ board
+]
+
+{ #category : 'building' }
 NGGameElement >> newCellElementAtRow: aRow column: aColumn [
 	| cell |
 	cell := NGCellElement row: aRow column: aColumn.
@@ -184,44 +207,76 @@ NGGameElement >> newCellElementAtRow: aRow column: aColumn [
 ]
 
 { #category : 'building' }
-NGGameElement >> newGrid [
+NGGameElement >> newColumnClueStrip [
+	| strip |
+	strip := BlElement new
+		layout: BlLinearLayout horizontal;
+		padding: (BlInsets left: NGPalette border right: NGPalette border);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
+	columnClueElements doWithIndex: [ :element :index |
+		element margin: (BlInsets right: (NGPalette gapAfter: index of: columnClueElements size)).
+		strip addChild: element ].
+	^ strip
+]
 
+{ #category : 'building' }
+NGGameElement >> newGrid [
+	"A 2 x 2 grid: an empty corner, the column clues, the row clues and the board"
 	| puzzle grid |
 	puzzle := game puzzle.
 	grid := BlElement new
-		        layout: (BlGridLayout horizontal
-				         columnCount: puzzle width + 1;
-				         cellSpacing: 2;
-				         yourself);
-		        constraintsDo: [ :layoutConstraints |
-				        layoutConstraints horizontal fitContent.
-				        layoutConstraints vertical fitContent ];
-		        yourself.
-	grid addChild: (BlElement new extent: 0 @ 0).
+		layout: (BlGridLayout horizontal columnCount: 2; cellSpacing: 0; yourself);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
 	columnClueElements := puzzle columnClues collect: [ :clue | NGClueElement forColumn: clue ].
-	grid addChildren: columnClueElements.
-	rowClueElements := (1 to: puzzle height) collect: [ :row | NGClueElement forRow: (puzzle rowClueAt: row) ].
+	rowClueElements := puzzle rowClues collect: [ :clue | NGClueElement forRow: clue ].
 	cells := (1 to: puzzle height) collect: [ :row |
-			         | rowCells |
-			         rowCells := (1 to: puzzle width) collect: [ :column | self newCellElementAtRow: row column: column ].
-			         grid addChild: (rowClueElements at: row).
-			         grid addChildren: rowCells.
-			         rowCells ].
+		(1 to: puzzle width) collect: [ :column | self newCellElementAtRow: row column: column ] ].
+	grid addChild: (BlElement new extent: 0 @ 0).
+	grid addChild: self newColumnClueStrip.
+	grid addChild: self newRowClueStrip.
+	grid addChild: self newBoard.
 	^ grid
+]
+
+{ #category : 'building' }
+NGGameElement >> newRowClueStrip [
+	| strip |
+	strip := BlElement new
+		layout: BlLinearLayout vertical;
+		padding: (BlInsets top: NGPalette border bottom: NGPalette border);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
+	rowClueElements doWithIndex: [ :element :index |
+		element margin: (BlInsets bottom: (NGPalette gapAfter: index of: rowClueElements size)).
+		strip addChild: element ].
+	^ strip
 ]
 
 { #category : 'building' }
 NGGameElement >> newToolbar [
 	| toolbar |
 	toolbar := BlElement new
-		layout: (BlLinearLayout horizontal cellSpacing: 8);
+		layout: (BlLinearLayout horizontal cellSpacing: 16) alignCenterLeft;
 		constraintsDo: [ :layoutConstraints |
 			layoutConstraints horizontal fitContent.
 			layoutConstraints vertical fitContent ];
 		yourself.
 	toolbar addChild: ((ToButton labelText: 'Restart') clickAction: [ self restart ]).
-	livesLabel := ToLabel text: ''.
-	toolbar addChild: livesLabel.
+	livesElement := BlElement new
+		layout: (BlLinearLayout horizontal cellSpacing: 2);
+		constraintsDo: [ :layoutConstraints |
+			layoutConstraints horizontal fitContent.
+			layoutConstraints vertical fitContent ];
+		yourself.
+	toolbar addChild: livesElement.
 	timerLabel := ToLabel text: ''.
 	toolbar addChild: timerLabel.
 	statusLabel := ToLabel text: ''.
@@ -240,12 +295,16 @@ NGGameElement >> refresh [
 		(game isRowSatisfiedAt: index) ifTrue: [ element showSatisfied ] ifFalse: [ element showUnsatisfied ] ].
 	columnClueElements withIndexDo: [ :element :index |
 		(game isColumnSatisfiedAt: index) ifTrue: [ element showSatisfied ] ifFalse: [ element showUnsatisfied ] ].
-	livesLabel text: (game printLives asRopedText
-		foreground: Color red;
-		fontSize: NGCellElement fontSize;
-		yourself).
+	self refreshLives.
 	self refreshTimer.
 	statusLabel text: game statusText
+]
+
+{ #category : 'rendering' }
+NGGameElement >> refreshLives [
+	livesElement removeChildren.
+	game livesLeft timesRepeat: [ livesElement addChild: NGIcons fullHeart ].
+	game lives - game livesLeft timesRepeat: [ livesElement addChild: NGIcons emptyHeart ]
 ]
 
 { #category : 'rendering' }
@@ -272,6 +331,7 @@ NGGameElement >> setGame: aGame [
 	self
 		layout: (BlLinearLayout vertical cellSpacing: 12);
 		padding: (BlInsets all: 16);
+		background: NGPalette background;
 		constraintsDo: [ :layoutConstraints |
 			layoutConstraints horizontal fitContent.
 			layoutConstraints vertical fitContent ].

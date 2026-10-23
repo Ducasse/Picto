@@ -11,12 +11,11 @@ Class {
 
 { #category : 'tests' }
 NGCellElementTest >> testCrossedRendering [
-
 	| cell |
 	cell := NGCellElement row: 1 column: 1.
 	NGCrossedCell new renderOn: cell.
 	self assert: cell childrenCount equals: 1.
-	self assert: cell background paint color equals: Color white
+	self assert: cell background paint color equals: NGPalette emptyCell
 ]
 
 { #category : 'tests' }
@@ -24,9 +23,9 @@ NGCellElementTest >> testCursorRendering [
 	| cell |
 	cell := NGCellElement row: 1 column: 1.
 	cell showCursor.
-	self assert: cell border width equals: 3.
+	self assert: cell border width equals: 2.
 	cell hideCursor.
-	self assert: cell border width equals: 1
+	self assert: cell border width equals: 0
 ]
 
 { #category : 'tests' }
@@ -39,7 +38,7 @@ NGCellElementTest >> testRendering [
 	self assert: cell childrenCount equals: 1.
 	NGFilledCell new renderOn: cell.
 	self assert: cell childrenCount equals: 0.
-	self assert: cell background paint color equals: Color black
+	self assert: cell background paint color equals: NGPalette filledCell
 ]
 
 { #category : 'tests' }
@@ -48,5 +47,5 @@ NGCellElementTest >> testRevealedEmptyRendering [
 	cell := NGCellElement row: 1 column: 1.
 	NGRevealedEmptyCell new renderOn: cell.
 	self assert: cell childrenCount equals: 0.
-	self assert: cell background paint color equals: NGCellElement errorColor
+	self assert: cell background paint color equals: NGPalette errorCell
 ]
