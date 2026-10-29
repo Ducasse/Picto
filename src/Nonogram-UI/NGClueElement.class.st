@@ -1,23 +1,36 @@
 "
 I display the clue of one row or column.
 
-Responsibility:
-- show the numbers of a clue: stacked for a column, on one line for a row
-- show myself satisfied (grey numbers on a pale green background) or not
+## Responsibility:
 
-Collaborators: NGClue; NGGameElement creates and updates me.
+- I show the numbers of a clue: stacked for a column, on one line for a row.
+- I show myself satisfied (grey numbers on a pale green background) or not.
+- I use the font size of the cells so numbers and cells match.
 
-Public API and Key Messages:
-- NGClueElement class >> #forColumn: and #forRow: create me
-- #showSatisfied, #showUnsatisfied
+## Collaborators:
 
-	NGClueElement forColumn: (NGClue blocks: #(2 1))
+- `NGClue` is what I display.
+- `NGGameElement` creates me and tells me when I am satisfied.
+- `NGPalette` gives my colors and `NGCellElement` my sizes.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	clue:	<NGClue> the displayed clue
-	texts:	<Array of Strings> the texts of my labels
+- `NGClueElement class >> #forColumn:` and `NGClueElement class >> #forRow:` create instances.
+- `#showSatisfied`, `#showUnsatisfied`
+- `#clue`
+
+```
+NGClueElement forColumn: (NGClue blocks: #(2 1))
+```
+
+## Internal Representation
+
+- `clue`: <`NGClue`> the displayed clue.
+- `texts`: <Array of Strings> the texts of my labels: one per block for a column, a single one for a row.
+
+### Implementation Points
+
+- An empty column clue shows `0`.
 "
 Class {
 	#name : 'NGClueElement',

@@ -1,23 +1,32 @@
 "
-I am the keyboard cursor on a grid.
+I am the keyboard cursor on a grid: I know which cell the keyboard acts on.
 
-Responsibility: hold the current cell and move it, stopping at the edges rather than wrapping around.
+## Responsibility:
 
-Collaborators: NGGameElement owns and draws me.
+- I hold the current cell, starting at row 1, column 1.
+- I move up, down, left and right, or jump to a given cell.
+- I stop at the edges of the grid rather than wrapping around.
 
-Public API and Key Messages:
-- NGCursor class >> #height:width: creates me at row 1, column 1
-- #moveUp, #moveDown, #moveLeft, #moveRight, #moveToRow:column:, #row, #column, #isAtRow:column:
+## Collaborators:
 
-	(NGCursor height: 5 width: 5) moveRight; column
+- `NGGameElement` owns me, moves me on arrow keys and clicks, and draws me on the cell I point to.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	row:		<Integer> the current row
-	column:	<Integer> the current column
-	height:	<Integer> the number of rows of the grid
-	width:	<Integer> the number of columns of the grid
+- `NGCursor class >> #height:width:` creates an instance on a grid of that size.
+- `#moveUp`, `#moveDown`, `#moveLeft`, `#moveRight`, `#moveToRow:column:`
+- `#row`, `#column`, `#isAtRow:column:`
+
+```
+(NGCursor height: 5 width: 5) moveRight; column
+```
+
+## Internal Representation
+
+- `row`: <Integer> the current row.
+- `column`: <Integer> the current column.
+- `height`: <Integer> the number of rows of the grid.
+- `width`: <Integer> the number of columns of the grid.
 "
 Class {
 	#name : 'NGCursor',

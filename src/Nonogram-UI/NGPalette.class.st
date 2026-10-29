@@ -1,19 +1,26 @@
 "
 I am the pastel color palette and grid metrics of the Nonogram UI.
 
-Responsibility:
-- answer every color used by the UI, in one place so they are easy to tweak
-- answer the widths of the grid lines: thin between cells, thick every 5 cells, and the board frame
+## Responsibility:
 
-Collaborators: NGCellElement, NGClueElement, NGGameElement and NGIcons use me.
+- I answer every color used by the UI, in one place so they are easy to tweak.
+- I answer the widths of the grid lines: thin between cells and thick every 5 cells.
+- I answer the width of the board frame.
 
-Public API and Key Messages:
-- class-side colors: #background, #emptyCell, #filledCell, #gridLine, #crossMark, #errorCell, #satisfiedClueBackground, #satisfiedClueText, #clueText, #cursor, #heart
-- class-side layout: #gapAfter:of:, #border
+## Collaborators:
 
-	NGPalette gapAfter: 5 of: 10 >>> 3
+- `NGCellElement`, `NGClueElement`, `NGGameElement`, `NGPuzzlePickerElement`, `NGWindow` and `NGIcons` ask me for colors and sizes.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- Class-side colors: `#background`, `#emptyCell`, `#filledCell`, `#gridLine`, `#crossMark`, `#errorCell`, `#satisfiedClueBackground`, `#satisfiedClueText`, `#clueText`, `#cursor`, `#heart`.
+- Class-side layout: `#gapAfter:of:`, `#border`.
+
+```
+NGPalette gapAfter: 5 of: 10 >>> 3
+```
+
+## Internal Representation
 
 I have no state: every resource is a class-side method.
 "

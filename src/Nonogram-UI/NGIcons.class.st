@@ -1,21 +1,34 @@
 "
 I am the catalog of vector icons of the Nonogram UI.
 
-Responsibility:
-- keep the SVG path data of each icon in a class-side resource method
-- build Bloc elements drawing these icons with the palette colors
+## Responsibility:
 
-Collaborators: NGPalette for the colors; NGCellElement uses the cross; NGGameElement uses the hearts.
+- I keep the SVG path data of each icon in a class-side resource method.
+- I build Bloc elements drawing these icons.
+- I color them with the palette colors.
 
-Public API and Key Messages:
-- class-side resources: #crossPath, #heartPath, #size
-- class-side icons: #cross, #fullHeart, #emptyHeart
+## Collaborators:
 
-	NGIcons fullHeart
+- `NGPalette` gives the colors.
+- `NGCellElement` uses the cross.
+- `NGGameElement` uses the hearts to show the lives.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-I have no state. Bloc does not scale SVG paths, so every path is drawn in a #size x #size box and the icon elements have that extent.
+- Class-side resources: `#crossPath`, `#heartPath`, `#size`.
+- Class-side icons: `#cross`, `#fullHeart`, `#emptyHeart`.
+
+```
+NGIcons fullHeart
+```
+
+## Internal Representation
+
+I have no state.
+
+### Implementation Points
+
+- Bloc does not scale SVG paths, so every path is drawn in a `#size` x `#size` box and the icon elements have that extent.
 "
 Class {
 	#name : 'NGIcons',

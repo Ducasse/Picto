@@ -1,18 +1,33 @@
 "
 I open Nonogram elements in their own window.
 
-Responsibility: open an element in a new titled window on the palette background, and keep the window fitting the element when its size changes.
+## Responsibility:
 
-Collaborators: NGGameElement and NGPuzzlePickerElement open through me; NGPalette gives the background.
+- I open an element in a new titled window.
+- I paint the window with the palette background.
+- I keep the window fitting the element when its size changes.
 
-Public API and Key Messages:
-- class-side #open:titled: answers the opened BlSpace
+## Collaborators:
 
-	NGWindow open: (NGGameElement on: (NGGame on: NGPuzzles plus)) titled: 'Plus'
+- `NGGameElement` and `NGPuzzlePickerElement` open through me.
+- `NGPalette` gives the background.
+- `BlSpace` is the window I create.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-I have no state. The element is laid out before opening to size the window, then a BlElementExtentChangedEvent handler resizes the window once text and icons are measured.
+- Class-side `#open:titled:` answers the opened `BlSpace`.
+
+```
+NGWindow open: (NGGameElement on: (NGGame on: NGPuzzles plus)) titled: 'Plus'
+```
+
+## Internal Representation
+
+I have no state.
+
+### Implementation Points
+
+- The element is laid out before opening to size the window, then a `BlElementExtentChangedEvent` handler resizes the window once text and icons are measured.
 "
 Class {
 	#name : 'NGWindow',

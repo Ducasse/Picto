@@ -1,24 +1,36 @@
 "
-I display the puzzles of an NGPuzzleLibrary so the player can choose one.
+I display the puzzles of an `NGPuzzleLibrary` so the player can choose one.
 
-Responsibility:
-- list each puzzle as a button showing its name and size
-- open a new fitted game window on the chosen puzzle
+## Responsibility:
 
-Collaborators: NGPuzzleLibrary, NGGameElement, NGWindow, NGPalette.
+- I list each puzzle as a button showing its name and size.
+- I open a new fitted game window on the chosen puzzle.
+- I size my buttons so the longest allowed name fits.
 
-Public API and Key Messages:
-- NGPuzzlePickerElement class >> #on: creates me; #open opens a picker on the default library
-- #play: opens a game on a puzzle; #open opens me in a fitted window
+## Collaborators:
 
-	NGPuzzlePickerElement open
+- `NGPuzzleLibrary` gives the puzzles offered.
+- `NGGameElement` is opened on the chosen puzzle.
+- `NGWindow` opens me; `NGPalette` gives my colors.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	library:	<NGPuzzleLibrary> the puzzles offered
+- `NGPuzzlePickerElement class >> #on:` creates an instance on a library; `NGPuzzlePickerElement class >> #open` opens a picker on the default library.
+- `#play:` opens a game on a puzzle.
+- `#open` opens me in a fitted window.
 
-Each game opens in its own window, so several puzzles can be played at once.
+```
+NGPuzzlePickerElement open
+```
+
+## Internal Representation
+
+- `library`: <`NGPuzzleLibrary`> the puzzles offered.
+
+### Implementation Points
+
+- Each game opens in its own window, so several puzzles can be played at once.
+- `NGPuzzlePickerElement class >> #buttonWidth` fits a name of `NGPuzzle class >> #maxNameSize` characters followed by the largest size.
 "
 Class {
 	#name : 'NGPuzzlePickerElement',

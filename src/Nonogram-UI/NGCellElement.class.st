@@ -1,23 +1,33 @@
 "
 I display one cell of the board.
 
-Responsibility:
-- show a cell as unknown, filled, crossed or revealed empty, as asked by its cell state
-- show or hide the keyboard cursor
+## Responsibility:
 
-Collaborators: NGCellState subclasses call me through #renderOn:; NGGameElement creates me.
+- I show a cell as unknown, filled, crossed or revealed empty, as asked by its cell state.
+- I show or hide the keyboard cursor.
+- I know my position on the board.
 
-Public API and Key Messages:
-- NGCellElement class >> #row:column: creates me; #cellSize and #fontSize give the sizes
-- #showUnknown, #showFilled, #showCrossed, #showRevealedEmpty, #showCursor, #hideCursor
+## Collaborators:
 
-	NGFilledCell new renderOn: (NGCellElement row: 1 column: 1)
+- `NGCellState` subclasses call me through `#renderOn:`.
+- `NGGameElement` creates me and refreshes me.
+- `NGPalette` gives my colors and `NGIcons` the cross.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	row:		<Integer> my row on the board
-	column:	<Integer> my column on the board
+- `NGCellElement class >> #row:column:` creates an instance; `#cellSize` and `#fontSize` give the sizes.
+- `#showUnknown`, `#showFilled`, `#showCrossed`, `#showRevealedEmpty`
+- `#showCursor`, `#hideCursor`
+- `#row`, `#column`
+
+```
+NGFilledCell new renderOn: (NGCellElement row: 1 column: 1)
+```
+
+## Internal Representation
+
+- `row`: <Integer> my row on the board.
+- `column`: <Integer> my column on the board.
 "
 Class {
 	#name : 'NGCellElement',

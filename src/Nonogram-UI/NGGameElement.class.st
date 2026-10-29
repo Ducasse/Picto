@@ -1,40 +1,49 @@
 "
-I display a playable NGGame with Bloc elements and Toplo widgets.
+I display a playable `NGGame` with Bloc elements and Toplo widgets: a toolbar on top, and the grid surrounded by its clues.
 
-Responsibility:
-- show a toolbar with restart, the lives as hearts, a timer and a status
-- show the grid with the clues and the cells, highlighting satisfied clues
-- turn mouse clicks and keys into game actions
-- show a banner with the solving time when the game is won, and a game over overlay on the grid when it is lost
+## Responsibility:
 
-Mouse: a primary click fills a cell, a secondary click crosses it.
-Keyboard: arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears.
+- I show a toolbar with a restart button, the lives as hearts, a timer and a status, and the grid with its clues and cells, highlighting satisfied clues.
+- I turn mouse clicks and keys into game actions: a primary click fills a cell and a secondary click crosses it; arrows move the cursor, Space or F fills, X crosses, Backspace or Delete clears.
+- I show a banner with the solving time when the game is won, and a game over overlay on the grid when it is lost.
 
-Collaborators: NGGame, NGCellElement, NGClueElement, NGCursor.
+## Collaborators:
 
-Public API and Key Messages:
-- NGGameElement class >> #on: creates me; #openOn: opens a game on a puzzle; #example opens one
-- #open opens me in a window sized to fit the puzzle
-- #fillAtRow:column:, #crossAtRow:column:, #clearAtRow:column:, #restart, #refresh
-- #showWon:, #showLost, #hideOutcome, called by the game state
+- `NGGame` is the model I display and to which I send the player's actions; its state calls me back to show the outcome.
+- `NGCellElement` displays each cell, `NGClueElement` each clue.
+- `NGCursor` is the keyboard cursor.
+- `NGIcons` draws the hearts and `NGWindow` opens me in a fitted window.
 
-	NGGameElement example
+## Public API and Key Messages
 
-Internal Representation and Key Implementation Points.
+- `NGGameElement class >> #on:` creates an instance on a game; `#openOn:` opens a game on a puzzle; `#example` opens one.
+- `#open` opens me in a window sized to fit the puzzle.
+- `#fillAtRow:column:`, `#crossAtRow:column:`, `#clearAtRow:column:`, `#restart`, `#refresh`
+- `#showWon:`, `#showLost`, `#hideOutcome` are called by the game state.
 
-Instance Variables
-	game:				<NGGame> the displayed game
-	cells:				<Array of Arrays of NGCellElement> the cell elements by row
-	rowClueElements:		<Array of NGClueElement> one per row
-	columnClueElements:	<Array of NGClueElement> one per column
-	cursor:				<NGCursor> the keyboard cursor
-	statusLabel:			<ToLabel> shows the game status
-	timerLabel:			<ToLabel> shows the elapsed time
-	banner:				<BlElement> the win banner with a Play again button, gone while playing
-	bannerLabel:			<ToLabel> the text of the win banner
-	overlay:				<BlElement> the game over layer over the grid with a Try again button, hidden while playing
-	livesElement:			<BlElement> shows one heart icon per life, full or empty
-	ticker:				<BlRepeatedTaskAction> refreshes the timer every second while I am in a space
+```
+NGGameElement openOn: NGPuzzles heart
+```
+
+## Internal Representation
+
+- `game`: <`NGGame`> the displayed game.
+- `cells`: <Array of Arrays of `NGCellElement`> the cell elements by row.
+- `rowClueElements`: <Array of `NGClueElement`> one per row.
+- `columnClueElements`: <Array of `NGClueElement`> one per column.
+- `cursor`: <`NGCursor`> the keyboard cursor.
+- `statusLabel`: <`ToLabel`> shows the game status.
+- `timerLabel`: <`ToLabel`> shows the elapsed time.
+- `banner`: <`BlElement`> the win banner with a Play again button, gone while playing.
+- `bannerLabel`: <`ToLabel`> the text of the win banner.
+- `overlay`: <`BlElement`> the game over layer over the grid with a Try again button, hidden while playing.
+- `livesElement`: <`BlElement`> shows one heart icon per life, full or empty.
+- `ticker`: <`BlRepeatedTaskAction`> refreshes the timer every second while I am in a space.
+
+### Implementation Points
+
+- `#refresh` redraws everything from the game: each cell state renders itself on its cell element, and the game state shows or hides the outcome, so I never test the game state myself.
+- `#keyActions` maps each key to the selector of the action it triggers.
 "
 Class {
 	#name : 'NGGameElement',
