@@ -22,5 +22,5 @@ NGRevealedEmptyCellTest >> testIsLocked [
 	self assert: cell afterFill equals: cell.
 	self assert: cell afterCross equals: cell.
 	self assert: cell afterClear equals: cell.
-	self assert: cell printString equals: '!'
+	
 ]

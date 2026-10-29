@@ -71,5 +71,8 @@ NGCellState >> isFilled [
 
 { #category : 'printing' }
 NGCellState >> printOn: aStream [
-	aStream nextPut: self character
+	super printOn: aStream. 
+	aStream nextPutAll: ' ('.
+	aStream nextPut: self character.
+	aStream nextPutAll: ')'.
 ]

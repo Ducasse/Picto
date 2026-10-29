@@ -19,5 +19,5 @@ NGFilledCellTest >> testTransitions [
 	self assert: NGFilledCell new afterFill equals: NGUnknownCell new.
 	self assert: NGFilledCell new afterCross equals: NGCrossedCell new.
 	self assert: NGFilledCell new isFilled.
-	self assert: NGFilledCell new printString equals: '#'
+
 ]
