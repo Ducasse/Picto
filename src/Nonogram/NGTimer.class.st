@@ -1,27 +1,37 @@
 "
 I measure the time a player spends on a puzzle.
 
-Responsibility:
-- start, stop and reset
-- answer the elapsed time, and print it as mm:ss (minutes go beyond 59)
+## Responsibility:
 
-Collaborators: NGTimerState subclasses to which I delegate; NGGame owns me.
+- I start, stop and reset.
+- I answer the elapsed time.
+- I print it as mm:ss, where minutes go beyond 59.
 
-Public API and Key Messages:
-- NGTimer class >> #new (real clock) and #clock: (injected clock) create me
-- #start, #stop, #reset, #elapsed, #printElapsed
+## Collaborators:
 
-	NGTimer new start; elapsed
+- `NGTimerState` subclasses receive the work I delegate.
+- `NGGame` owns me and starts and stops me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	clock:		<BlockClosure> answers the current DateAndTime; tests inject a fake one
-	state:		<NGTimerState> idle, running or stopped
-	startTime:	<DateAndTime> when I was started
-	endTime:	<DateAndTime> when I was stopped
+- `NGTimer class >> #new` (real clock) and `NGTimer class >> #clock:` (injected clock) create instances.
+- `#start`, `#stop`, `#reset`
+- `#elapsed`, `#printElapsed`
 
-startTime and endTime are only read by the states for which they were set, so no nil test is needed.
+```
+NGTimer new start; elapsed
+```
+
+## Internal Representation
+
+- `clock`: <BlockClosure> answers the current `DateAndTime`; tests inject a fake one.
+- `state`: <`NGTimerState`> idle, running or stopped.
+- `startTime`: <`DateAndTime`> when I was started.
+- `endTime`: <`DateAndTime`> when I was stopped.
+
+### Implementation Points
+
+- `startTime` and `endTime` are only read by the states for which they were set, so no nil test is needed.
 "
 Class {
 	#name : 'NGTimer',

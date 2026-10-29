@@ -1,24 +1,35 @@
 "
 I am a collection of playable puzzles: each one has a single solution.
 
-Responsibility:
-- accept a puzzle only if it has a single solution, otherwise signal NGAmbiguousPuzzleError
-- give access to my puzzles in insertion order and by name
+## Responsibility:
 
-Collaborators: NGPuzzle, NGSolver, NGAmbiguousPuzzleError, NGPuzzles for the default content.
+- I accept a puzzle only if it has a single solution; otherwise I signal `NGAmbiguousPuzzleError`.
+- I give access to my puzzles in insertion order.
+- I give access to my puzzles by name.
 
-Public API and Key Messages:
-- NGPuzzleLibrary class >> #default answers a new library with every built-in puzzle
-- #add:, #puzzles, #puzzleNamed:, #size
+## Collaborators:
 
-	NGPuzzleLibrary default puzzleNamed: 'Heart'
+- `NGPuzzle` is what I hold.
+- `NGSolver` finds another solution of an ambiguous puzzle.
+- `NGAmbiguousPuzzleError` is signalled when I refuse a puzzle.
+- `NGPuzzles` provides my default content.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	puzzles:	<OrderedDictionary> puzzles by name; adding a name twice replaces the earlier puzzle in place
+- `NGPuzzleLibrary class >> #default` answers a new library with every built-in puzzle; `#new` an empty one.
+- `#add:`, `#puzzles`, `#puzzleNamed:`, `#size`
 
-The default library is rebuilt on each access, so I keep no global state.
+```
+NGPuzzleLibrary default puzzleNamed: 'Heart'
+```
+
+## Internal Representation
+
+- `puzzles`: <OrderedDictionary> puzzles by name; adding a name twice replaces the earlier puzzle in place.
+
+### Implementation Points
+
+- The default library is rebuilt on each access, so I keep no global state.
 "
 Class {
 	#name : 'NGPuzzleLibrary',

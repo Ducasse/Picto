@@ -1,24 +1,31 @@
 "
 I am the clue of one row or column: the ordered lengths of the runs of filled cells.
 
-Responsibility:
-- describe a line and tell whether a line satisfies me
-- enumerate every line of a given length satisfying me
-- tell whether the beginning of a line can still be completed to satisfy me
+## Responsibility:
 
-Collaborators: NGPuzzle builds me; NGSolver uses my placements.
+- I describe a line and tell whether a line satisfies me.
+- I enumerate every line of a given length satisfying me.
+- I tell whether the beginning of a line can still be completed to satisfy me.
 
-Public API and Key Messages:
-- NGClue class >> #fromLine: and #blocks: create me
-- #blocks, #isEmpty, #filledCount, #isSatisfiedBy:
-- #placementsInLength:
+## Collaborators:
 
-	(NGClue fromLine: #(true true false true)) blocks >>> #(2 1)
+- `NGPuzzle` builds me from its solution.
+- `NGSolver` uses my placements to search for solutions.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	blocks:		<Array of Integers> the run lengths; empty for an empty line, printed as 0
+- `NGClue class >> #fromLine:` and `NGClue class >> #blocks:` create instances.
+- `#blocks`, `#isEmpty`, `#filledCount` describe me.
+- `#isSatisfiedBy:` checks a line.
+- `#placementsInLength:` answers every line satisfying me.
+
+```
+(NGClue fromLine: #(true true false true)) blocks >>> #(2 1)
+```
+
+## Internal Representation
+
+- `blocks`: <Array of Integers> the run lengths; empty for an empty line, printed as 0.
 "
 Class {
 	#name : 'NGClue',

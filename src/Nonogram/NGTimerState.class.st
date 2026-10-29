@@ -1,15 +1,26 @@
 "
-I am the abstract state of an NGTimer.
+I am the abstract state of an `NGTimer`.
 
-Responsibility: answer the state reached on start and on stop, and the elapsed time of the timer.
+## Responsibility:
 
-Collaborators: NGTimer; my subclasses NGIdleTimerState, NGRunningTimerState and NGStoppedTimerState.
+- I answer the state reached on start.
+- I answer the state reached on stop.
+- I answer the elapsed time of the timer.
 
-Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+## Collaborators:
 
-	NGIdleTimerState new elapsedIn: aTimer >>> Duration zero
+- `NGTimer` delegates to me.
+- My subclasses `NGIdleTimerState`, `NGRunningTimerState` and `NGStoppedTimerState` define the concrete behavior.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#startIn:`, `#stopIn:`, `#elapsedIn:`
+
+```
+NGIdleTimerState new elapsedIn: aTimer >>> Duration zero
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

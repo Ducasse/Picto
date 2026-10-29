@@ -1,15 +1,26 @@
 "
 I am the state of a cell the player has filled.
 
-Responsibility: count as filled; go back to unknown on a fill and become crossed on a cross; render as a black cell.
+## Responsibility:
 
-Collaborators: NGCellState, NGCellElement.
+- I count as filled.
+- I go back to unknown on a fill and become crossed on a cross.
+- I render as a black cell.
 
-Public API and Key Messages: #isFilled, #afterFill, #afterCross, #renderOn:
+## Collaborators:
 
-	NGFilledCell new isFilled >>> true
+- `NGCellState` is my abstract superclass.
+- `NGCellElement` displays me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#isFilled`, `#afterFill`, `#afterCross`, `#renderOn:`
+
+```
+NGFilledCell new isFilled >>> true
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

@@ -1,26 +1,39 @@
 "
 I find the solutions of a nonogram from its clues alone, without looking at any stored solution.
 
-Responsibility:
-- enumerate the grids satisfying a set of row and column clues, up to a requested count
+## Responsibility:
 
-Collaborators: NGClue for the placements of each line; NGPuzzle and NGPuzzleLibrary use me to check uniqueness.
+- I enumerate the grids satisfying a set of row and column clues.
+- I stop as soon as a requested number of solutions is found.
+- I detect contradictions, so clues without solution answer no grid.
 
-Public API and Key Messages:
-- NGSolver class >> #forPuzzle: and #rowClues:columnClues: create me
-- #solutionsUpTo:
+## Collaborators:
 
-	((NGSolver forPuzzle: NGPuzzles plus) solutionsUpTo: 2) size >>> 1
+- `NGClue` gives the placements of each line.
+- `NGPuzzle` and `NGPuzzleLibrary` use me to check uniqueness.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	rowClues:			<Array of NGClue> the clues of the rows
-	columnClues:		<Array of NGClue> the clues of the columns
-	rowPlacements:		<Array of Arrays> for each row, every line satisfying its clue
-	columnPlacements:	<Array of Arrays> for each column, every line satisfying its clue
+- `NGSolver class >> #forPuzzle:` and `NGSolver class >> #rowClues:columnClues:` create instances.
+- `#solutionsUpTo:` answers at most that many solutions.
 
-I search on a grid of #unknown, #filled and #empty cells. I first propagate: each line keeps only the placements fitting its known cells, and the cells on which all of them agree become known, until nothing changes. A line without placement is a contradiction. If rows are still open, I guess each placement of the row with the fewest ones and search again. I stop once enough solutions are found; 20 x 20 puzzles are checked in a few milliseconds.
+```
+((NGSolver forPuzzle: NGPuzzles plus) solutionsUpTo: 2) size >>> 1
+```
+
+## Internal Representation
+
+- `rowClues`: <Array of `NGClue`> the clues of the rows.
+- `columnClues`: <Array of `NGClue`> the clues of the columns.
+- `rowPlacements`: <Array of Arrays> for each row, every line satisfying its clue.
+- `columnPlacements`: <Array of Arrays> for each column, every line satisfying its clue.
+
+### Implementation Points
+
+- I search on a grid of `#unknown`, `#filled` and `#empty` cells.
+- I first propagate: each line keeps only the placements fitting its known cells, and the cells on which all of them agree become known, until nothing changes. A line without placement is a contradiction.
+- If rows are still open, I guess each placement of the row with the fewest ones and search again.
+- 20 x 20 puzzles are checked in a few milliseconds.
 "
 Class {
 	#name : 'NGSolver',

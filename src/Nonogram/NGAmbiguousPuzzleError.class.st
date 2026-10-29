@@ -1,21 +1,33 @@
 "
-I am signalled when a puzzle with more than one solution is added to an NGPuzzleLibrary.
+I am signalled when a puzzle with more than one solution is added to an `NGPuzzleLibrary`: I protect the library from puzzles that the player could not solve by logic alone.
 
-Responsibility: carry the ambiguous puzzle and another solution, and describe them in my message.
+## Responsibility:
 
-Collaborators: NGPuzzleLibrary signals me.
+- I carry the rejected ambiguous puzzle.
+- I carry another solution, different from the stored one, that proves the ambiguity.
+- I describe both in my message text so the puzzle author can fix the picture.
 
-Public API and Key Messages:
-- NGAmbiguousPuzzleError class >> #signalFor:otherSolution:
-- #puzzle, #otherSolution, #messageText
+## Collaborators:
 
-	[ NGPuzzleLibrary new add: aPuzzle ] on: NGAmbiguousPuzzleError do: [ :error | error otherSolution ]
+- `NGPuzzleLibrary` signals me when it refuses a puzzle.
+- `NGPuzzle` is the rejected puzzle I hold.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	puzzle:			<NGPuzzle> the rejected puzzle
-	otherSolution:	<Array of Arrays of Booleans> a solution different from the stored one
+- `NGAmbiguousPuzzleError class >> #signalFor:otherSolution:` creates and signals me.
+- `#puzzle` and `#otherSolution` answer what I carry.
+- `#messageText` shows the other solution.
+
+```
+[ NGPuzzleLibrary new add: aPuzzle ]
+	on: NGAmbiguousPuzzleError
+	do: [ :error | error otherSolution ]
+```
+
+## Internal Representation
+
+- `puzzle`: <`NGPuzzle`> the rejected puzzle.
+- `otherSolution`: <Array of Arrays of Booleans> a solution different from the stored one.
 "
 Class {
 	#name : 'NGAmbiguousPuzzleError',

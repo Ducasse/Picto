@@ -1,17 +1,31 @@
 "
 I am the state of a stopped timer: its elapsed time is frozen.
 
-Responsibility: ignore start and stop; answer the time between start and end.
+## Responsibility:
 
-Collaborators: NGTimer.
+- I ignore start.
+- I ignore stop.
+- I answer the time between start and end.
 
-Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+## Collaborators:
 
-	NGStoppedTimerState new elapsedIn: aTimer
+- `NGTimer` delegates to me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-I have no instance variables. Only a reset of the timer leaves me.
+- `#startIn:`, `#stopIn:`, `#elapsedIn:`
+
+```
+NGStoppedTimerState new elapsedIn: aTimer
+```
+
+## Internal Representation
+
+I have no instance variables.
+
+### Implementation Points
+
+- Only a reset of the timer leaves me.
 "
 Class {
 	#name : 'NGStoppedTimerState',

@@ -1,15 +1,27 @@
 "
 I am the state of a solved game.
 
-Responsibility: ignore the player's actions; answer a status with the solving time.
+## Responsibility:
 
-Collaborators: NGGame, NGTimer.
+- I ignore the player's actions.
+- I answer a status with the solving time.
+- I show the winning banner.
 
-Public API and Key Messages: #statusTextIn: answers 'Solved in mm:ss'
+## Collaborators:
 
-	NGWonState new statusTextIn: aGame
+- `NGGame` delegates to me.
+- `NGTimer` gives the solving time.
+- `NGGameState` is my abstract superclass.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#statusTextIn:` answers `'Solved in mm:ss'`.
+
+```
+NGWonState new statusTextIn: aGame
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

@@ -2,26 +2,31 @@
 I am the player's board: a grid of cell states, all unknown at start.
 
 ## Responsibility:
-- store and answer the state of each cell
-- answer rows and columns, and which of their cells are filled
 
-## Collaborators: 
-- `NGCellState` subclasses as cell values; 
-- `NGGame` changes me; 
-- `NGPuzzle` judges me.
+- I store and answer the state of each cell.
+- I answer the rows and columns of the grid, and which of their cells are filled.
+- I can be reset to an all unknown grid.
 
-## Public API and Key Messages:
-- `NGBoard class >> #for:` and `NGBoard class >> #height:width:` create instances.
-- #atRow:column:, #atRow:column:put:, #filledRowAt:, #filledColumnAt:, #reset
+## Collaborators:
+
+- `NGCellState` subclasses are the values I hold.
+- `NGGame` changes me when the player acts.
+- `NGPuzzle` judges me against its clues.
+
+## Public API and Key Messages
+
+- `NGBoard class >> #for:` (sized after a puzzle) and `NGBoard class >> #height:width:` create instances.
+- `#atRow:column:` and `#atRow:column:put:` read and write a cell.
+- `#filledRowAt:` and `#filledColumnAt:` answer a line as Booleans.
+- `#reset` makes every cell unknown again.
 
 ```
 (NGBoard height: 2 width: 3) atRow: 1 column: 2 put: NGFilledCell new
 ```
 
-## Internal Representation and Key Implementation Points.
+## Internal Representation
 
-Instance Variables
-	rows:	<Array of Arrays of NGCellState> the grid; positions are 1-based row and column
+- `rows`: <Array of Arrays of `NGCellState`> the grid; positions are 1-based row and column.
 "
 Class {
 	#name : 'NGBoard',

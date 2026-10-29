@@ -1,15 +1,26 @@
 "
-I am the state of a cell the player has not decided on yet.
+I am the state of a cell the player has not decided on yet. Every cell of a new board starts with me.
 
-Responsibility: become filled on a fill and crossed on a cross; render as a blank cell.
+## Responsibility:
 
-Collaborators: NGCellState, NGCellElement.
+- I become filled on a fill.
+- I become crossed on a cross.
+- I render as a blank cell.
 
-Public API and Key Messages: #afterFill, #afterCross, #renderOn:
+## Collaborators:
 
-	NGUnknownCell new afterCross >>> NGCrossedCell new
+- `NGCellState` is my abstract superclass.
+- `NGCellElement` displays me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#afterFill`, `#afterCross`, `#renderOn:`
+
+```
+NGUnknownCell new afterCross >>> NGCrossedCell new
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

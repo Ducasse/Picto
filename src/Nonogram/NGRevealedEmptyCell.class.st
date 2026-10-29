@@ -1,15 +1,28 @@
 "
 I am the state of a cell the player wrongly tried to fill: the fill was refused and I reveal that the cell is empty.
 
-Responsibility: stay unchanged whatever the action (I am locked); render as a reddish cell.
+## Responsibility:
 
-Collaborators: NGGame puts me on the board on an error; NGCellElement displays me.
+- I stay unchanged whatever the action of the player: I am locked.
+- I become unknown once the puzzle is won, so only filled cells remain visible.
+- I render as a reddish cell.
 
-Public API and Key Messages: #afterFill, #afterCross, #afterClear (all answer myself), #renderOn:
+## Collaborators:
 
-	NGRevealedEmptyCell new afterClear >>> NGRevealedEmptyCell new
+- `NGGame` puts me on the board on an error.
+- `NGCellElement` displays me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#afterFill`, `#afterCross`, `#afterClear` all answer myself.
+- `#afterWin` answers an unknown cell.
+- `#renderOn:`
+
+```
+NGRevealedEmptyCell new afterClear >>> NGRevealedEmptyCell new
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

@@ -1,15 +1,26 @@
 "
 I am the state of a timer that is counting.
 
-Responsibility: ignore start; on stop, mark the end time and become stopped; answer the time since the start.
+## Responsibility:
 
-Collaborators: NGTimer, NGStoppedTimerState.
+- I ignore start.
+- On stop, I mark the end time and make the timer stopped.
+- I answer the time since the start.
 
-Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+## Collaborators:
 
-	NGRunningTimerState new elapsedIn: aTimer
+- `NGTimer` delegates to me.
+- `NGStoppedTimerState` is the state I lead to.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#startIn:`, `#stopIn:`, `#elapsedIn:`
+
+```
+NGRunningTimerState new elapsedIn: aTimer
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

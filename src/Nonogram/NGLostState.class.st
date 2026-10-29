@@ -1,15 +1,26 @@
 "
 I am the state of a game where the player lost all lives.
 
-Responsibility: ignore the player's actions; answer 'Game over' as status.
+## Responsibility:
 
-Collaborators: NGGame.
+- I ignore the player's actions.
+- I answer `'Game over'` as status.
+- I show the game over overlay.
 
-Public API and Key Messages: #statusTextIn:
+## Collaborators:
 
-	NGLostState new statusTextIn: aGame >>> 'Game over'
+- `NGGame` delegates to me.
+- `NGGameState` is my abstract superclass.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#statusTextIn:`
+
+```
+NGLostState new statusTextIn: aGame >>> 'Game over'
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

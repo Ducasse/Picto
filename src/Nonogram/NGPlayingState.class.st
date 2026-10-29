@@ -1,15 +1,27 @@
 "
 I am the state of a game in progress.
 
-Responsibility: forward the player's actions to the game; answer an empty status.
+## Responsibility:
 
-Collaborators: NGGame.
+- I forward the player's actions to the game.
+- I answer an empty status.
+- I hide any outcome shown on the game element.
 
-Public API and Key Messages: #fillAtRow:column:in:, #crossAtRow:column:in:, #clearAtRow:column:in:, #statusTextIn:
+## Collaborators:
 
-	NGPlayingState new fillAtRow: 1 column: 1 in: aGame
+- `NGGame` delegates to me and receives the forwarded actions.
+- `NGGameState` is my abstract superclass.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#fillAtRow:column:in:`, `#crossAtRow:column:in:`, `#clearAtRow:column:in:`
+- `#statusTextIn:`
+
+```
+NGPlayingState new fillAtRow: 1 column: 1 in: aGame
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

@@ -1,15 +1,26 @@
 "
 I am the state of a timer that has not been started.
 
-Responsibility: on start, mark the start time and become running; ignore stop; answer a zero elapsed time.
+## Responsibility:
 
-Collaborators: NGTimer, NGRunningTimerState.
+- On start, I mark the start time and make the timer running.
+- I ignore stop.
+- I answer a zero elapsed time.
 
-Public API and Key Messages: #startIn:, #stopIn:, #elapsedIn:
+## Collaborators:
 
-	NGIdleTimerState new startIn: aTimer
+- `NGTimer` delegates to me.
+- `NGRunningTimerState` is the state I lead to.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#startIn:`, `#stopIn:`, `#elapsedIn:`
+
+```
+NGIdleTimerState new startIn: aTimer
+```
+
+## Internal Representation
 
 I have no instance variables.
 "

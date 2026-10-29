@@ -1,17 +1,32 @@
 "
 I am the catalog of built-in puzzles.
 
-Responsibility: define each built-in puzzle in a class-side method tagged with the <puzzle> pragma.
+## Responsibility:
 
-Collaborators: NGPuzzleLibrary class >> #default collects my <puzzle> methods.
+- I define each built-in puzzle in a class-side method.
+- I tag each of these methods with the `<puzzle>` pragma so it can be discovered.
+- I offer puzzles from 3 x 3 (`#plus`) to 20 x 20 (`#greatLighthouse`, `#greatBalloon`).
 
-Public API and Key Messages: class-side puzzle methods, from 3 x 3 (#plus) to 20 x 20 (#greatLighthouse, #greatBalloon)
+## Collaborators:
 
-	NGPuzzles heart
+- `NGPuzzleLibrary class >> #default` collects my `<puzzle>` methods.
+- `NGPuzzle` is what each of my methods answers.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-I have no state. To add a puzzle, add a class-side method with the <puzzle> pragma answering an NGPuzzle; NGPuzzlesTest checks it has a single solution.
+- Class-side puzzle methods, such as `#plus`, `#heart`, `#greatLighthouse`.
+
+```
+NGPuzzles heart
+```
+
+## Internal Representation
+
+I have no state.
+
+### Implementation Points
+
+- To add a puzzle, add a class-side method with the `<puzzle>` pragma answering an `NGPuzzle`; `NGPuzzlesTest` checks it has a single solution.
 "
 Class {
 	#name : 'NGPuzzles',

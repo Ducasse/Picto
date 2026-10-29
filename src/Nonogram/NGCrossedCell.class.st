@@ -1,17 +1,32 @@
 "
-I am the state of a cell the player marked as probably empty. A cross is only a hypothesis and is never judged against the solution.
+I am the state of a cell the player marked as probably empty.
 
-Responsibility: become filled on a fill and go back to unknown on a cross; render as a cross.
+## Responsibility:
 
-Collaborators: NGCellState, NGCellElement.
+- I become filled on a fill.
+- I go back to unknown on a cross, and once the puzzle is won.
+- I render as a cross.
 
-Public API and Key Messages: #afterFill, #afterCross, #renderOn:
+## Collaborators:
 
-	NGCrossedCell new afterCross >>> NGUnknownCell new
+- `NGCellState` is my abstract superclass.
+- `NGCellElement` displays me.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
+
+- `#afterFill`, `#afterCross`, `#afterWin`, `#renderOn:`
+
+```
+NGCrossedCell new afterCross >>> NGUnknownCell new
+```
+
+## Internal Representation
 
 I have no instance variables.
+
+### Implementation Points
+
+- A cross is only a hypothesis of the player and is never judged against the solution.
 "
 Class {
 	#name : 'NGCrossedCell',

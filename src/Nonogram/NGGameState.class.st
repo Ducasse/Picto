@@ -1,17 +1,35 @@
 "
-I am the abstract state of an NGGame.
+I am the abstract state of an `NGGame`.
 
-Responsibility: handle the player's actions and describe the status of the game.
+## Responsibility:
 
-Collaborators: NGGame delegates to me; my subclasses are NGPlayingState, NGWonState and NGLostState.
+- I handle the player's fill, cross and clear actions.
+- I describe the status of the game.
+- I show the end of the game, if any, on a game element.
 
-Public API and Key Messages: #fillAtRow:column:in:, #crossAtRow:column:in:, #clearAtRow:column:in:, #statusTextIn:, #showOutcomeOn:for: (shows the end of the game on an NGGameElement)
+## Collaborators:
 
-	NGPlayingState new statusTextIn: aGame
+- `NGGame` delegates its actions to me.
+- My subclasses `NGPlayingState`, `NGWonState` and `NGLostState` define the concrete behavior.
+- `NGGameElement` is where I show the outcome.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-I have no instance variables. A finished game ignores actions by polymorphism rather than by testing flags.
+- `#fillAtRow:column:in:`, `#crossAtRow:column:in:`, `#clearAtRow:column:in:`
+- `#statusTextIn:`
+- `#showOutcomeOn:for:` shows the end of the game on an `NGGameElement`.
+
+```
+NGPlayingState new statusTextIn: aGame
+```
+
+## Internal Representation
+
+I have no instance variables.
+
+### Implementation Points
+
+- A finished game ignores actions by polymorphism rather than by testing flags.
 "
 Class {
 	#name : 'NGGameState',

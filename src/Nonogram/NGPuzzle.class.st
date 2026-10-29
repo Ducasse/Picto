@@ -1,32 +1,39 @@
 "
 I am a nonogram puzzle: a named grid picture together with the row and column clues derived from it.
 
-Responsibility:
-- keep the stored solution and derive the clues from it
-- tell whether a line of a board satisfies its clue, and whether a whole board solves me
-- tell whether my clues admit a single solution
+## Responsibility:
 
-Collaborators: NGClue for the clues, NGBoard for the player's grid, NGSolver to check uniqueness.
+- I keep the stored solution and derive the clues from it.
+- I tell whether a line of a board satisfies its clue, and whether a whole board solves me.
+- I tell whether my clues admit a single solution.
 
-Public API and Key Messages:
-- NGPuzzle class >> #named:fromStrings: and #named:solution: create me
-- #rowClueAt:, #columnClueAt:, #width, #height, #isFilledAtRow:column:
-- #isRowSatisfiedAt:by:, #isColumnSatisfiedAt:by:, #isSolvedBy:
-- #hasUniqueSolution
+## Collaborators:
 
-	NGPuzzle named: 'Plus' fromStrings: #('.#.' '###' '.#.')
+- `NGClue` represents each of my row and column clues.
+- `NGBoard` is the player's grid I judge.
+- `NGSolver` checks that I have a unique solution.
 
-$# is a filled cell, any other character an empty one.
+## Public API and Key Messages
 
-Internal Representation and Key Implementation Points.
+- `NGPuzzle class >> #named:fromStrings:` and `NGPuzzle class >> #named:solution:` create instances; in strings, `$#` is a filled cell and any other character an empty one.
+- `#name`, `#width`, `#height`, `#rowClueAt:`, `#columnClueAt:`, `#isFilledAtRow:column:`
+- `#isRowSatisfiedAt:by:`, `#isColumnSatisfiedAt:by:`, `#isSolvedBy:`
+- `#hasUniqueSolution`
 
-Instance Variables
-	name:			<String> the name of the puzzle, used as its identity in a library; at most #maxNameSize characters so it fits in the picker
-	solution:		<Array of Arrays of Booleans> the rows of the picture, all of the same size
-	rowClues:		<Array of NGClue> one clue per row
-	columnClues:	<Array of NGClue> one clue per column
+```
+NGPuzzle named: 'Plus' fromStrings: #('.#.' '###' '.#.')
+```
 
-A board solves me when every line matches its clue, so any board satisfying the clues is accepted, not only the stored solution.
+## Internal Representation
+
+- `name`: <String> the name of the puzzle, used as its identity in a library; at most `NGPuzzle class >> #maxNameSize` characters so it fits in the picker.
+- `solution`: <Array of Arrays of Booleans> the rows of the picture, all of the same size.
+- `rowClues`: <Array of `NGClue`> one clue per row.
+- `columnClues`: <Array of `NGClue`> one clue per column.
+
+### Implementation Points
+
+- A board solves me when every line matches its clue, so any board satisfying the clues is accepted, not only the stored solution.
 "
 Class {
 	#name : 'NGPuzzle',

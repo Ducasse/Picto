@@ -1,33 +1,42 @@
 "
-I am a play session on a puzzle.
+I am a play session on a puzzle: I turn the player's actions into changes on a board and decide when the game is won or lost.
 
-Responsibility:
-- apply the player's fill, cross and clear actions to a board
-- refuse a fill on a cell that is empty in the stored solution, reveal that cell and take a life
-- tell when the puzzle is solved (each line matches its clue) or lost (no life left)
-- run a timer from the first action until the game is won or lost
-- restart the game
+## Responsibility:
 
-Collaborators: NGPuzzle, NGBoard, NGTimer, and NGGameState subclasses to which actions are delegated.
+- I apply the player's fill, cross and clear actions to a board, and refuse a fill on a cell that is empty in the stored solution: I reveal that cell and take a life.
+- I tell when the puzzle is solved (each line matches its clue) or lost (no life left).
+- I run a timer from the first action until the game is won or lost, and I can restart the game.
 
-Public API and Key Messages:
-- NGGame class >> #on:, #on:lives: and #on:lives:timer: create me (3 lives by default)
-- #toggleFillAtRow:column:, #toggleCrossAtRow:column:, #clearAtRow:column:, #restart
-- #isSolved, #isRowSatisfiedAt:, #isColumnSatisfiedAt:, #livesLeft, #printLives, #statusText, #timer, #showOutcomeOn:
+## Collaborators:
 
-	(NGGame on: NGPuzzles plus) toggleFillAtRow: 2 column: 2
+- `NGPuzzle` gives the clues and the stored solution.
+- `NGBoard` holds the player's grid.
+- `NGTimer` measures the time spent.
+- `NGGameState` subclasses receive the actions I delegate.
 
-Internal Representation and Key Implementation Points.
+## Public API and Key Messages
 
-Instance Variables
-	puzzle:		<NGPuzzle> the puzzle being played
-	board:		<NGBoard> the player's grid
-	timer:		<NGTimer> the time spent on the game
-	lives:		<Integer> the number of lives at start
-	livesLeft:	<Integer> the number of lives remaining
-	state:		<NGGameState> playing, won or lost; won and lost ignore the actions
+- `NGGame class >> #on:`, `#on:lives:` and `#on:lives:timer:` create instances (3 lives by default).
+- `#toggleFillAtRow:column:`, `#toggleCrossAtRow:column:`, `#clearAtRow:column:`, `#restart` play.
+- `#isSolved`, `#isRowSatisfiedAt:`, `#isColumnSatisfiedAt:` judge the board.
+- `#livesLeft`, `#printLives`, `#statusText`, `#timer`, `#showOutcomeOn:` report on the game.
 
-Crosses are never judged; only fills are checked against the stored solution.
+```
+(NGGame on: NGPuzzles plus) toggleFillAtRow: 2 column: 2
+```
+
+## Internal Representation
+
+- `puzzle`: <`NGPuzzle`> the puzzle being played.
+- `board`: <`NGBoard`> the player's grid.
+- `timer`: <`NGTimer`> the time spent on the game.
+- `lives`: <Integer> the number of lives at start.
+- `livesLeft`: <Integer> the number of lives remaining.
+- `state`: <`NGGameState`> playing, won or lost; won and lost ignore the actions.
+
+### Implementation Points
+
+- Crosses are never judged; only fills are checked against the stored solution.
 "
 Class {
 	#name : 'NGGame',
