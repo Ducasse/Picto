@@ -4,9 +4,9 @@ I test NGSolver.
 Class {
 	#name : 'NGSolverTest',
 	#superclass : 'TestCase',
-	#category : 'Nonogram-Tests-Core',
+	#category : 'Nonogram-Tests-Solver',
 	#package : 'Nonogram-Tests',
-	#tag : 'Core'
+	#tag : 'Solver'
 }
 
 { #category : 'helpers' }
