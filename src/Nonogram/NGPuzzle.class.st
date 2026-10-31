@@ -137,12 +137,15 @@ NGPuzzle >> rowClues [
 
 { #category : 'initialization' }
 NGPuzzle >> setName: aString solution: anArrayOfRows [
+
 	(anArrayOfRows collect: [ :row | row size ]) asSet size = 1
 		ifFalse: [ self error: 'All rows of a puzzle must have the same size' ].
 	aString size > self class maxNameSize
 		ifTrue: [ self error: 'A puzzle name must have at most ' , self class maxNameSize printString , ' characters' ].
+
 	name := aString.
 	solution := anArrayOfRows.
+	
 	rowClues := solution collect: [ :row | NGClue fromLine: row ].
 	columnClues := (1 to: self width) collect: [ :index | NGClue fromLine: (self solutionColumnAt: index) ]
 ]

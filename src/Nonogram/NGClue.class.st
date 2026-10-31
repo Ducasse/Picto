@@ -1,5 +1,6 @@
 "
 I am the clue of one row or column: the ordered lengths of the runs of filled cells.
+For example for the first row of ('.#.' '###' '.#.') my instance blocks will be #(1).
 
 ## Responsibility:
 
@@ -92,11 +93,21 @@ NGClue >> isSatisfiedBy: aCollectionOfBooleans [
 { #category : 'solving' }
 NGClue >> placementsInLength: aLength [
 	"Answer every line of aLength Booleans whose runs of true values are exactly my blocks"
+	
 	^ self placementsOfBlocks: blocks inLength: aLength
 ]
 
 { #category : 'private' }
 NGClue >> placementsOfBlocks: aSequence inLength: aLength [
+	"Answer an Array of every way to place the blocks of aSequence in a line of aLength cells, as in a nonogram clue.
+	aSequence holds the block lengths, in order. Each placement is an Array of aLength Booleans: true for a filled cell, false for an empty one. Blocks keep their order and at least one empty cell separates two blocks.
+	An empty aSequence has a single placement with every cell empty. If the blocks do not fit in aLength, the answer is empty.
+
+	For example, blocks #(2 1) in a length of 5 give 3 placements:
+		#(true true false true false)
+		#(true true false false true)
+		#(false true true false true)"
+		
 	| first rest minimumRest placements |
 	aSequence ifEmpty: [ ^ Array with: (Array new: aLength withAll: false) ].
 	first := aSequence first.

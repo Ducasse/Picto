@@ -104,7 +104,23 @@ NGBoard >> setHeight: aHeight width: aWidth [
 { #category : 'actions' }
 NGBoard >> showSolved [
 	"Clear every cross so that only the picture remains"
-	rows do: [ :row | row doWithIndex: [ :cell :index | row at: index put: cell afterWin ] ]
+	
+	rows do: [ :row | row 
+		doWithIndex: [ :cell :index | row at: index put: cell afterWin ] ]
+]
+
+{ #category : 'actions' }
+NGBoard >> testShowSolvedClearsCrosses [
+
+	| board |
+	board := NGBoard height: 1 width: 4.
+	board atRow: 1 column: 1 put: NGFilledCell new.
+	board atRow: 1 column: 2 put: NGCrossedCell new.
+	board atRow: 1 column: 3 put: NGRevealedEmptyCell new.
+	board showSolved.
+	self assert: (board atRow: 1 column: 2) class equals: NGUnknownCell .
+		self assert: (board atRow: 1 column: 3) class equals: NGUnknownCell .
+
 ]
 
 { #category : 'accessing' }
