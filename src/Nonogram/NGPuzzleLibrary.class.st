@@ -55,17 +55,20 @@ NGPuzzleLibrary class >> default [
 { #category : 'adding' }
 NGPuzzleLibrary >> add: aPuzzle [
 	"Add aPuzzle if it has a single solution; a puzzle with the same name is replaced in place"
+	
 	| solutions |
 	solutions := (NGSolver forPuzzle: aPuzzle) solutionsUpTo: 2.
 	solutions size = 1 ifFalse: [
 		^ NGAmbiguousPuzzleError
 			signalFor: aPuzzle
 			otherSolution: (solutions detect: [ :each | each ~= aPuzzle solution ]) ].
-	^ puzzles at: aPuzzle name put: aPuzzle
+	puzzles at: aPuzzle name put: aPuzzle.
+	^ aPuzzle
 ]
 
 { #category : 'initialization' }
 NGPuzzleLibrary >> initialize [
+
 	super initialize.
 	puzzles := OrderedDictionary new
 ]

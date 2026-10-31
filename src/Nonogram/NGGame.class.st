@@ -71,16 +71,23 @@ NGGame class >> on: aPuzzle lives: anInteger timer: aTimer [
 
 { #category : 'private' }
 NGGame >> basicClearAtRow: aRow column: aColumn [
-	self play: (board atRow: aRow column: aColumn) afterClear atRow: aRow column: aColumn
+	self 
+		play: (board atRow: aRow column: aColumn) afterClear 
+		atRow: aRow 
+		column: aColumn
 ]
 
 { #category : 'private' }
 NGGame >> basicCrossAtRow: aRow column: aColumn [
-	self play: (board atRow: aRow column: aColumn) afterCross atRow: aRow column: aColumn
+	self 
+		play: (board atRow: aRow column: aColumn) afterCross 
+		atRow: aRow 
+		column: aColumn
 ]
 
 { #category : 'private' }
 NGGame >> basicFillAtRow: aRow column: aColumn [
+
 	| newState |
 	newState := (board atRow: aRow column: aColumn) afterFill.
 	(newState isFilled and: [ (puzzle isFilledAtRow: aRow column: aColumn) not ])
@@ -95,6 +102,7 @@ NGGame >> board [
 
 { #category : 'private' }
 NGGame >> checkSolved [
+
 	self isSolved ifFalse: [ ^ self ].
 	timer stop.
 	board showSolved.
@@ -141,7 +149,8 @@ NGGame >> lose [
 
 { #category : 'private' }
 NGGame >> play: aCellState atRow: aRow column: aColumn [
-	(board atRow: aRow column: aColumn) = aCellState ifTrue: [ ^ self ].
+	(board atRow: aRow column: aColumn) = aCellState 
+		ifTrue: [ ^ self ].
 	board atRow: aRow column: aColumn put: aCellState.
 	timer start.
 	self checkSolved
@@ -178,6 +187,7 @@ NGGame >> revealErrorAtRow: aRow column: aColumn [
 
 { #category : 'initialization' }
 NGGame >> setPuzzle: aPuzzle lives: anInteger timer: aTimer [
+
 	puzzle := aPuzzle.
 	board := NGBoard for: aPuzzle.
 	lives := anInteger.
@@ -187,6 +197,7 @@ NGGame >> setPuzzle: aPuzzle lives: anInteger timer: aTimer [
 
 { #category : 'rendering' }
 NGGame >> showOutcomeOn: aGameElement [
+
 	state showOutcomeOn: aGameElement for: self
 ]
 
