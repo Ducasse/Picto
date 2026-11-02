@@ -102,6 +102,8 @@ NGApplication >> commonProperties [
 		  at: #BundleIdentifier put: self bundleIdentifier;
 		  at: #ShortVersion put: self shortVersion;
 		  at: #CommandLineHandler put: NGPictoCommand commandName;
+		  at: #VMZipFile put: self vmZipFile;
+		  at: #VMIncludeZipFile put: self vmZipFile;
 		  yourself
 ]
 
@@ -245,6 +247,13 @@ NGApplication >> showAbout [
 		title: 'About ' , self appName
 		flags: 16r00000040
 		window: ExternalAddress null
+]
+
+{ #category : 'metadata' }
+NGApplication >> vmZipFile [
+	"The headless VM of Pharo 14 is published as latest12.zip on files.pharo.org (PharoApplicationGenerator defaults to latest10.zip)"
+
+	^ 'latest12.zip'
 ]
 
 { #category : 'packaging' }
