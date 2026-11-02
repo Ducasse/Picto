@@ -1,0 +1,12 @@
+# Produced by buildOSX.sh / buildWindows.sh
+/build/
+/pharo
+/pharo-ui
+/pharo-vm/
+/Pharo*.image
+/Pharo*.changes
+/Pharo*.sources
+/Picto.image
+/Picto.changes
+/pharo-local/
+/PharoDebug.log
