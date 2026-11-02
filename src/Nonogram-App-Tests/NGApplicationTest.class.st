@@ -26,6 +26,14 @@ NGApplicationTest >> testAboutTextGivesNameAndDescription [
 ]
 
 { #category : 'tests' }
+NGApplicationTest >> testEmbeddedModeCanBeAsked [
+	"AppGeneratorSupport class>>#isEmbedded sends #argumentsInclude: to Smalltalk; Pharo 14 removed it, so the launch failed. The test image is not started with --embedded."
+
+	self deny: AppGeneratorSupport isEmbedded.
+	self assert: (Smalltalk argumentsInclude: '--embedded') equals: (Smalltalk arguments includes: '--embedded')
+]
+
+{ #category : 'tests' }
 NGApplicationTest >> testIconsAreReadFromResources [
 
 	self assert: application iconSetFile parent basename equals: 'resources'.
