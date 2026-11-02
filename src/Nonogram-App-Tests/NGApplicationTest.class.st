@@ -26,6 +26,16 @@ NGApplicationTest >> testAboutTextGivesNameAndDescription [
 ]
 
 { #category : 'tests' }
+NGApplicationTest >> testContextAnswersMethodPropertiesForObjCBridge [
+	"ObjCBridge builds its Cocoa callouts with Context>>#methodProperties; Pharo 14 removed it, so the native macOS menu failed"
+
+	| properties |
+	properties := thisContext methodProperties.
+	self assert: properties isMethodProperties.
+	self assert: properties selector equals: #testContextAnswersMethodPropertiesForObjCBridge
+]
+
+{ #category : 'tests' }
 NGApplicationTest >> testEmbeddedModeCanBeAsked [
 	"AppGeneratorSupport class>>#isEmbedded sends #argumentsInclude: to Smalltalk; Pharo 14 removed it, so the launch failed. The test image is not started with --embedded."
 
