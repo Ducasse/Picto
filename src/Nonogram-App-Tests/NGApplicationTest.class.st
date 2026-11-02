@@ -26,6 +26,22 @@ NGApplicationTest >> testAboutTextGivesNameAndDescription [
 ]
 
 { #category : 'tests' }
+NGApplicationTest >> testClosingTheMainWindowQuits [
+	"Bloc delivers the close event on a later pulse, so wait for it (at most 2 seconds)"
+
+	| quitted space |
+	quitted := false.
+	application quitBlock: [ quitted := true ].
+	space := application openMainWindow.
+	[
+		self assert: space root children first class equals: NGPuzzlePickerElement.
+		self deny: quitted.
+		space close.
+		20 timesRepeat: [ quitted ifFalse: [ (Delay forMilliseconds: 100) wait ] ].
+		self assert: quitted ] ensure: [ space isOpened ifTrue: [ space close ] ]
+]
+
+{ #category : 'tests' }
 NGApplicationTest >> testContextAnswersMethodPropertiesForObjCBridge [
 	"ObjCBridge builds its Cocoa callouts with Context>>#methodProperties; Pharo 14 removed it, so the native macOS menu failed"
 

@@ -19,7 +19,7 @@ I describe Picto, the Nonogram game packaged as a desktop application, and I kno
 
 - `NGApplication class >> #generateOSXPackage` and `#generateWindowsPackage` are called by `buildOSX.sh` and `buildWindows.sh`.
 - `#osxProperties` and `#windowsProperties` answer the dictionaries given to the generators.
-- `#launch` starts the application.
+- `#launch` starts the application; `#openMainWindow` opens the puzzle picker, whose closing quits.
 
 ```
 NGApplication new osxProperties.
@@ -30,7 +30,9 @@ See `NGApplication class >> #exampleDefault`.
 
 ## Internal Representation
 
-I have no state: my metadata are constants.
+- `quitBlock`: <BlockClosure> run when the main window closes; by default it quits the image without saving. Tests replace it.
+
+My metadata are constants.
 
 ### Implementation Points
 
@@ -40,6 +42,9 @@ I have no state: my metadata are constants.
 Class {
 	#name : 'NGApplication',
 	#superclass : 'Object',
+	#instVars : [
+		'quitBlock'
+	],
 	#category : 'Nonogram-App',
 	#package : 'Nonogram-App'
 }
@@ -161,14 +166,12 @@ NGApplication >> installErrorHandling [
 
 { #category : 'launching' }
 NGApplication >> launch [
-	"Start the packaged application: error handling, native macOS menu, then the puzzle picker. Closing the picker quits."
+	"Start the packaged application: error handling, native macOS menu, then the main window. Closing it quits."
 
 	OSWindowDriver current startUp: true.
 	AppGeneratorSupport isEmbedded ifTrue: [ self installErrorHandling ].
 	OSPlatform current isMacOSX ifTrue: [ self macMenu setAsMainMenu ].
-	^ self openPicker
-		  when: BlSpaceClosedEvent do: [ :event | self quit ];
-		  yourself
+	^ self openMainWindow
 ]
 
 { #category : 'metadata' }
@@ -191,6 +194,16 @@ NGApplication >> macMenu [
 		with: [ :m | self puzzleMenuItems do: [ :item | m addItemWithTitle: item key action: [ NGGameElement openOn: item value ] ] ].
 	menu addSubmenu: 'Help' with: [ :m | m addItemWithTitle: 'About ' , self appName action: [ self showAbout ] ].
 	^ menu
+]
+
+{ #category : 'launching' }
+NGApplication >> openMainWindow [
+	"Open the puzzle picker; closing it quits the application"
+
+	| space |
+	space := self openPicker.
+	space addEventHandlerOn: BlSpaceClosedEvent do: [ :event | self quit ].
+	^ space
 ]
 
 { #category : 'launching' }
@@ -223,7 +236,19 @@ NGApplication >> puzzleMenuItems [
 { #category : 'launching' }
 NGApplication >> quit [
 
-	Smalltalk snapshot: false andQuit: true
+	self quitBlock value
+]
+
+{ #category : 'launching' }
+NGApplication >> quitBlock [
+
+	^ quitBlock ifNil: [ quitBlock := [ Smalltalk snapshot: false andQuit: true ] ]
+]
+
+{ #category : 'launching' }
+NGApplication >> quitBlock: aBlock [
+
+	quitBlock := aBlock
 ]
 
 { #category : 'files' }
