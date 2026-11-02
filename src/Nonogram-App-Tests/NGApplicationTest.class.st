@@ -81,6 +81,13 @@ NGApplicationTest >> testPuzzleMenuItemsListTheLibrary [
 ]
 
 { #category : 'tests' }
+NGApplicationTest >> testSessionAnswersReadOnlyAccessMode [
+	"AppGenerator-Support overrides SmalltalkImage>>#snapshot:andQuit: and sends #isReadOnlyAccessMode to the session; Pharo 14 removed it, so saving or quitting failed"
+
+	self deny: SessionManager default currentSession isReadOnlyAccessMode
+]
+
+{ #category : 'tests' }
 NGApplicationTest >> testWindowsPropertiesDescribePicto [
 
 	| properties |
