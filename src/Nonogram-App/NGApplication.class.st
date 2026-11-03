@@ -274,13 +274,6 @@ NGApplication >> showAbout [
 		window: ExternalAddress null
 ]
 
-{ #category : 'metadata' }
-NGApplication >> vmZipFile [
-	"The headless VM of Pharo 14 is published as latest12.zip on files.pharo.org (PharoApplicationGenerator defaults to latest10.zip)"
-
-	^ 'latest12.zip'
-]
-
 { #category : 'packaging' }
 NGApplication >> windowsProperties [
 
