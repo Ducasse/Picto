@@ -107,8 +107,6 @@ NGApplication >> commonProperties [
 		  at: #BundleIdentifier put: self bundleIdentifier;
 		  at: #ShortVersion put: self shortVersion;
 		  at: #CommandLineHandler put: NGPictoCommand commandName;
-		  at: #VMZipFile put: self vmZipFile;
-		  at: #VMIncludeZipFile put: self vmZipFile;
 		  yourself
 ]
 
@@ -170,7 +168,7 @@ NGApplication >> launch [
 
 	OSWindowDriver current startUp: true.
 	AppGeneratorSupport isEmbedded ifTrue: [ self installErrorHandling ].
-	OSPlatform current isMacOSX ifTrue: [ self macMenu setAsMainMenu ].
+	OSPlatform current isMacOSX ifTrue: [ self macMenu beMainMenu ].
 	^ self openMainWindow
 ]
 
@@ -255,7 +253,9 @@ NGApplication >> quitBlock: aBlock [
 NGApplication >> resourcesDirectory [
 	"The build scripts run from the repository root, where resources/ holds the icons"
 
-	^ FileLocator workingDirectory / 'resources'
+	^ (IceRepository repositoryNamed: 'Picto') 
+		ifNotNil: [ :repo | repo location / 'resources' ]
+		ifNil: [ FileLocator workingDirectory / 'resources' ]
 ]
 
 { #category : 'metadata' }
@@ -272,13 +272,6 @@ NGApplication >> showAbout [
 		title: 'About ' , self appName
 		flags: 16r00000040
 		window: ExternalAddress null
-]
-
-{ #category : 'metadata' }
-NGApplication >> vmZipFile [
-	"The headless VM of Pharo 14 is published as latest12.zip on files.pharo.org (PharoApplicationGenerator defaults to latest10.zip)"
-
-	^ 'latest12.zip'
 ]
 
 { #category : 'packaging' }
