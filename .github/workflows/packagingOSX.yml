@@ -1,0 +1,42 @@
+name: Packaging for macOS
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packaging tools
+        run: brew install create-dmg imagemagick sdl2
+
+      - name: Create package
+        run: ./buildOSX.sh
+
+      - name: Keep the DMG as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Picto-macOS
+          path: build/*.dmg
+
+      - name: Move the latest-macos tag to this commit
+        if: github.event_name == 'push'
+        run: |
+          git tag -f latest-macos
+          git push -f origin latest-macos
+
+      - name: Publish the rolling release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest-macos
+          name: Picto for macOS (development build)
+          prerelease: true
+          files: build/*.dmg
