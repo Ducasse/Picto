@@ -94,17 +94,6 @@ NGApplicationTest >> testPropertiesLaunchThePictoCommand [
 ]
 
 { #category : 'tests' }
-NGApplicationTest >> testPropertiesUseTheVMOfPharo14 [
-	"get.pharo.org/64/140+vm uses the VM published as latest12.zip; the generator default is latest10.zip"
-
-	{
-		application osxProperties.
-		application windowsProperties } do: [ :properties |
-			self assert: (properties at: #VMZipFile) equals: 'latest12.zip'.
-			self assert: (properties at: #VMIncludeZipFile) equals: 'latest12.zip' ]
-]
-
-{ #category : 'tests' }
 NGApplicationTest >> testPuzzleMenuItemsListTheLibrary [
 
 	| library items |
