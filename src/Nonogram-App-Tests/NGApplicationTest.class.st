@@ -14,12 +14,10 @@ Class {
 { #category : 'running' }
 NGApplicationTest >> runCaseManaged [
 
-	"I need to skip the collection of background processes errors during the execution in linux"
-	
-	^ OSPlatform current isLinux
-		ifTrue: [ self runCase ]
-		ifFalse: [ super runCaseManaged ]
+	"Skipping if running in Linux"
+	OSPlatform current isLinux ifTrue: [ ^ self skip ].
 
+	super runCaseManaged
 ]
 
 { #category : 'tests' }
