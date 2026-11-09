@@ -1,14 +1,18 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'Picto',
+      #baseline : 'Nonogram',
       #directory : 'src',
+      #load : [ 'default', 'App' ],
+      #onConflict : #useLoaded,
+      #onUpgrade : #useLoaded,
       #platforms : [ #pharo ]
     }
   ],
   #testing : {
+    #packages : [ 'Nonogram-Tests', 'Nonogram-App-Tests' ],
     #coverage : {
-      #packages : [ 'Picto-Tests' ]
+      #packages : [ 'Nonogram', 'Nonogram-UI', 'Nonogram-App' ]
     }
   }
 }
