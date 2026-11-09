@@ -11,6 +11,17 @@ Class {
 	#package : 'Nonogram-App-Tests'
 }
 
+{ #category : 'running' }
+NGApplicationTest >> runCaseManaged [
+
+	"I need to skip the collection of background processes errors during the execution of #testClosingTheMainWindowQuits"
+	
+	^ testSelector = #testClosingTheMainWindowQuits 
+		ifTrue: [ self runCase ]
+		ifFalse: [ super runCaseManaged ]
+
+]
+
 { #category : 'tests' }
 NGApplicationTest >> setUp [
 
