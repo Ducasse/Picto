@@ -9,9 +9,24 @@ Class {
 }
 
 { #category : 'tests' }
+NGPictoCommandTest >> clapContextEnsuringPictoCommands [
+
+	"If we are running the tests with coverage, the pragmas does not work. A the pragmas filter out the non installed methods (coverage uses wrappers, real methods are never installed)."
+	
+	| ctx |
+	ctx := ClapContext withPragmaCommands.
+	(ctx specification subcommands anySatisfy: [ :s | s commandClass = NGPictoCommand ])
+			ifTrue: [ ^ ctx ].
+			
+	ctx specification add: (NGPictoCommand commandSpecification).
+	
+	^ ctx	
+]
+
+{ #category : 'tests' }
 NGPictoCommandTest >> matchOf: arguments [
 
-	^ (ClapContext withPragmaCommands
+	^ (self clapContextEnsuringPictoCommands
 		   arguments: arguments;
 		   yourself) match
 ]
@@ -31,7 +46,6 @@ NGPictoCommandTest >> testPictoIsAValidCommandLine [
 { #category : 'tests' }
 NGPictoCommandTest >> testPictoWithEmbeddedFlagIsAValidCommandLine [
 	"The PharoApplicationGenerator launcher always runs: picto --embedded"
-
 	self assert: (self matchOf: #( 'picto' '--embedded' )) isValid
 ]
 
